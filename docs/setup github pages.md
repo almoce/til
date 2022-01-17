@@ -1,3 +1,7 @@
+---
+tags: [github, domain, html]
+---
+
 # setting up github pages
 
 - go to github project `settings`
