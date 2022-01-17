@@ -12,30 +12,23 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
     - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js 17.x
       uses: actions/setup-node@v2
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: '17.x'
         cache: 'npm'
     - run: npm ci
     - run: npm start
     - uses: actions/checkout@v2
       with:
-        ref: "pages"
+        ref: pages
     - run: |
+        ls
         cp -a build/* ./
         git config user.name github-actions
         git config user.email github-actions@github.com
         git add .
         git commit -m "generated"
         git push
-        
-   
-    
