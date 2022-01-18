@@ -1,0 +1,7 @@
+<!doctypehtml><meta charset=utf8><meta content="IE=edge"http-equiv=X-UA-Compatible><title>create folder in nodejs</title><link href=/css.css rel=stylesheet><link href=/highlight.css rel=stylesheet><div class=container><h1 id=create-folder-in-nodejs>create folder in nodejs</h1><p><code>fs.exists</code> have been deprecated<pre><code class="hljs language-javascript"><span class=hljs-keyword>var</span> fs = <span class=hljs-built_in>require</span>(<span class=hljs-string>'fs'</span>);
+<span class=hljs-keyword>var</span> dir = <span class=hljs-string>'./tmp/folder'</span>;
+
+<span class=hljs-keyword>if</span> (!fs.<span class="hljs-function hljs-title">existsSync</span>(dir)){
+    fs.<span class="hljs-function hljs-title">mkdirSync</span>(dir, { <span class=hljs-attr>recursive</span>: <span class=hljs-literal>true</span> });
+}
+</code></pre></div>
