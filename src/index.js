@@ -33,7 +33,7 @@ child_process.exec(`ls ${DOC_FOLDER}`, async (err, stdout, stderr) => {
             const history = res[idx]
             const createTime = history[history.length - 1]
             const modifyTime = history[0]
-
+            console.log(fileName, history)
             const hashKey = crypto.createHash('md5').update(String(fileName)).digest('hex')
             const hashValue = crypto.createHash('md5').update(String(modifyTime)).digest('hex')
             const fileObject = {
@@ -81,7 +81,6 @@ function saveRecord(str) {
 async function generateHtml(str, filePath) {
     str = await minify(str)
     fs.writeFile(filePath, str)
-    console.log('generated', filePath);
 }
 
 async function generateIndexHtml(data) {
@@ -119,7 +118,6 @@ function getTitle(str) {
 function checkBuildFolder() {
     return new Promise(resolve => {
         if (!existsSync(BUILD_FOLDER)) {
-            console.log('mkdir');
             mkdirSync(BUILD_FOLDER, {recursive: true})
         }
         resolve()
