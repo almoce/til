@@ -1,0 +1,29 @@
+<!doctypehtml><meta charset=utf8><meta content="IE=edge"http-equiv=X-UA-Compatible><title>github action automatio</title><link href=/css.css rel=stylesheet><link href=/highlight.css rel=stylesheet><div class=container><h1 id=github-action-automation>github action automation</h1><ul><li>select action menu at githu menu tab<li>create a new workflow, chose a pre configuration, ex: node.js<li><code>on</code> defined event to trigger this workflow, ex: <code>push</code>, <code>pull_request</code><li>jobs enviroment, <code>runs-on</code>, ex: <code>ubuntu-latest</code><li><code>strategy</code> can define different verstion to use in this workflow, which this can be not necessray for build<li><code>steps</code> for workflow steps</ul><pre><code class="hljs language-yaml"><span class=hljs-attr>steps:</span>
+ <span class=hljs-bullet>-</span> <span class=hljs-attr>use:</span> <span class=hljs-string>action/checkout@v2</span> <span class=hljs-comment># git chekcout to current reposition with default branch</span>
+ <span class=hljs-bullet>-</span> <span class=hljs-attr>name:</span> <span class=hljs-string>use</span> <span class=hljs-string>node.js</span> <span class=hljs-comment># name of this action</span>
+    <span class=hljs-attr>use:</span> <span class=hljs-string>acton/setup-node@v2</span> <span class=hljs-comment># setup the nodejs</span>
+    <span class=hljs-attr>with:</span> 
+      <span class=hljs-attr>node-verstion:</span> <span class=hljs-string>'17.x'</span> <span class=hljs-comment># define the version to this aciton</span>
+      <span class=hljs-attr>cache:</span> <span class=hljs-string>'npm'</span>
+ <span class=hljs-bullet>-</span> <span class=hljs-attr>run:</span> <span class=hljs-string>npm</span> <span class=hljs-string>ci</span> <span class=hljs-comment># install dependencies, or npm install, npm ci work with package-lock.json</span>
+ <span class=hljs-bullet>-</span> <span class=hljs-attr>run:</span> <span class=hljs-string>npm</span> <span class=hljs-string>run</span> <span class=hljs-string>build</span> <span class=hljs-comment># build the project</span>
+</code></pre><p>if we checkout to another branch or reposition, all new files or genereated files will be lost github provide a solution for store file in github artifact.<pre><code class="hljs language-yaml">  <span class=hljs-bullet>-</span> <span class=hljs-attr>uses:</span> <span class=hljs-string>actions/upload-artifact@v</span>
+    <span class=hljs-attr>with:</span>
+      <span class=hljs-attr>name:</span> <span class=hljs-string>build</span> <span class=hljs-comment># name of artifact</span>
+      <span class=hljs-attr>path:</span> <span class=hljs-string>build</span> <span class=hljs-comment># path to upload, can be file or folder</span>
+</code></pre><p>to checkout to a different branch of same repository.<pre><code class="hljs language-yaml"> <span class=hljs-bullet>-</span> <span class=hljs-attr>uses:</span> <span class=hljs-string>actions/checkout@v2</span>
+      <span class=hljs-attr>with:</span>
+        <span class=hljs-attr>ref:</span> <span class=hljs-string>branchname</span> <span class=hljs-comment># target branch name</span>
+</code></pre><p>download file of folder just upload in previous step<pre><code class="hljs language-yaml">  <span class=hljs-bullet>-</span> <span class=hljs-attr>uses:</span> <span class=hljs-string>actions/download-artifact@v2</span>
+      <span class=hljs-attr>with:</span>
+        <span class=hljs-attr>name:</span> <span class=hljs-string>build</span>
+        <span class=hljs-attr>path:</span> <span class=hljs-string>build</span>
+</code></pre><p>finaly wen can make the commit at target branch or repository<pre><code class="hljs language-yaml">
+ <span class=hljs-bullet>-</span> <span class=hljs-attr>run:</span> <span class=hljs-string>|
+        cp -a build/* ./
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git add *.html *.css *.woff docs/*.html
+        git commit -m "generated"
+        git push
+</span></code></pre></div>
