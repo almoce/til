@@ -5,54 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>TIL - Today I learned</title>
     <link rel="stylesheet" href="/css.css">
-    <style>
-        .home {
-            max-width: 600px;
-            margin: auto;
-        }
-        ul {
-            list-style: none;
-        }
-        li {
-            padding-bottom: 20px;
-        }
-        a {
-            color: #000;
-            text-decoration:  none;
-            padding: 3px 10px;
-            border-radius: 3px;
-            background: #fff;
-            transition: all 0.1s;
-        }
-        a:hover {
-            color: #fff;
-            text-decoration:  none;
-            background: #000;
-        }
-        li div{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .time {
-            font-size: 8px;
-            color: #666;
-            text-transform: uppercase;
-            padding-top: 3px;
-        }
-        h1 {
-            text-align: center;
-            letter-spacing: 30px;
-            margin: 50px;
-            font-family: Times;
-            border: 0px;
-        }
-
-    </style>
 </head>
-<body>
+<body class="home">
     <h1>TIL</h1>
-    <div class="home">
+    <div>
         {{content}}
     </div>
 </body>

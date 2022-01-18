@@ -16,18 +16,24 @@ const RECORD_FILE = path.join(ROOT_PATH, 'record.json')
 child_process.exec(`ls ${DOC_FOLDER}`, async (err, stdout, stderr) => {
     const docTemplate = await getTemplate(`${TEMPLATE_FOLDER}/doc.html`)
     const fileList = stdout.trim().split('\n')
-    let fileStats = fileList.map(i => fs.stat(path.join(DOC_FOLDER, i)))
+    const fileHistroy = fileList.map(i => {
+         return new Promise(resolve => {
+            const filePath = path.join(DOC_FOLDER, i)
+            child_process.exec(`git log --follow --format=%aD "${filePath}"`, (err, stdout, stderr) => resolve(stdout.trim().split('\n')))
+        })
+    })
     const fileRecord = await getRecord()
     await checkBuildFolder()
     const indexList = []
-    Promise.all(fileStats).then(async res => {
+    Promise.all(fileHistroy).then(async res => {
         for(let idx in res) {
             const fileName = fileList[idx]
             const title = fileName.replace('.md', '')
             const filepath = path.join(DOC_FOLDER, fileName)
-            const stats = res[idx]
-            const createTime = stats.birthtime
-            const modifyTime = stats.mtime
+            const history = res[idx]
+            const createTime = history[history.length - 1]
+            const modifyTime = history[0]
+
             const hashKey = crypto.createHash('md5').update(String(fileName)).digest('hex')
             const hashValue = crypto.createHash('md5').update(String(modifyTime)).digest('hex')
             const fileObject = {
@@ -80,13 +86,20 @@ async function generateHtml(str, filePath) {
 
 async function generateIndexHtml(data) {
     const str = ''
-    data.sort((a, b) => b.createTime - a.createTime)
+    data.sort((a, b) => new Date(b.createTime) - new Date(a.createTime))
     let ul = ''
     data.forEach(i => {
+        let tags = ''
+        if (i.tags && i.tags.length) {
+            tags = i.tags.map(i => `<span class="tag">${i}</span>`).join('')
+        }
         ul += `<li>
             <div>
-                <a href="/docs/${i.key}.html">${i.name}</a>
-                <sup class="time">${new Date(i.createTime).toLocaleString()}</sup>
+                <div><a href="/docs/${i.key}.html">${i.name}</a></div>
+                <div class="time">${new Date(i.createTime).toLocaleString()}</div>
+            </div>
+            <div>
+                <div class="tags">${tags}</div>
             </div>
         </li>`
     })

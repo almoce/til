@@ -242,3 +242,55 @@ img {
 
 
 
+.home {
+    max-width: 600px;
+    margin: auto;
+}
+.home ul {
+    list-style: none;
+}
+.home li {
+    padding-bottom: 20px;
+}
+.home li > div:first-child {
+    border-left: 1px dashed #545454;
+    padding-left: 10px;
+}
+.home a {
+    color: #000;
+    text-decoration:  none;
+    padding-bottom: 3px;
+    border-bottom: 1px dashed #ccc;
+    transition: all 0.1s;
+}
+.home a:hover {
+    /*color: #fff;*/
+    /*text-decoration:  line-through;*/
+    border-bottom: 1px solid #000;
+    /*background: #000;*/
+}
+.home li {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.home .tag {
+    font-size: 8px;
+    color: #666;
+    text-transform: uppercase;
+    padding-left: 10px;
+}
+.home .time {
+    font-size: 8px;
+    color: #666;
+    text-transform: uppercase;
+    padding-top: 3px;
+}
+.home h1 {
+    text-align: center;
+    letter-spacing: 30px;
+    margin: 50px;
+    font-family: Times;
+    border: 0px;
+}
