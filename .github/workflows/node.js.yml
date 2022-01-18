@@ -23,9 +23,9 @@ jobs:
     - run: npm start
     - uses: actions/checkout@v2
       with:
+        clear: false
         ref: pages
     - run: |
-        ls
         cp -a build/* ./
         git config user.name github-actions
         git config user.email github-actions@github.com
