@@ -19,6 +19,7 @@ jobs:
       with:
         node-version: '17.x'
         cache: 'npm'
+    - run: git fecth
     - run: npm ci
     - run: npm start
     - uses: actions/upload-artifact@v2
@@ -37,6 +38,6 @@ jobs:
         cp -a build/* ./
         git config user.name github-actions
         git config user.email github-actions@github.com
-        git add *.html *.css *.woff docs/*.html
+        git add *.html *.css *.woff docs
         git commit -m "generated"
         git push
