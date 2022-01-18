@@ -19,7 +19,7 @@ child_process.exec(`ls ${DOC_FOLDER}`, async (err, stdout, stderr) => {
     const fileHistroy = fileList.map(i => {
          return new Promise(resolve => {
             const filePath = path.join(DOC_FOLDER, i)
-            child_process.exec(`git log --follow --format=%aD "${filePath}"`, (err, stdout, stderr) => resolve(stdout.trim().split('\n')))
+            child_process.exec(`git log origin/main --follow --format=%aD "${filePath}"`, (err, stdout, stderr) => resolve(stdout.trim().split('\n')))
         })
     })
     const fileRecord = await getRecord()
@@ -33,7 +33,7 @@ child_process.exec(`ls ${DOC_FOLDER}`, async (err, stdout, stderr) => {
             const history = res[idx]
             const createTime = history[history.length - 1]
             const modifyTime = history[0]
-            console.log(fileName, history)
+
             const hashKey = crypto.createHash('md5').update(String(fileName)).digest('hex')
             const hashValue = crypto.createHash('md5').update(String(modifyTime)).digest('hex')
             const fileObject = {

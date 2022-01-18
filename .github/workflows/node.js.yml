@@ -33,6 +33,7 @@ jobs:
         name: build
         path: build
     - run: |
+        rm -rf docs
         cp -a build/* ./
         git config user.name github-actions
         git config user.email github-actions@github.com
