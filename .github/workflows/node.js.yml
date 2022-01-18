@@ -27,7 +27,6 @@ jobs:
         path: build
     - uses: actions/checkout@v2
       with:
-        clear: false
         ref: pages
     - uses: actions/download-artifact@v2
       with:
@@ -37,6 +36,6 @@ jobs:
         cp -a build/* ./
         git config user.name github-actions
         git config user.email github-actions@github.com
-        git add *.html *.css *.woff
+        git add *.html *.css *.woff docs/*.html
         git commit -m "generated"
         git push
