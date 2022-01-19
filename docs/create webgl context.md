@@ -1,5 +1,5 @@
 ---
-tagas: [canvas, html, webgl, javascript]
+tags: [canvas, html, webgl, javascript]
 ---
 
 # create webgl context
