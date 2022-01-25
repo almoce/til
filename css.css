@@ -9,7 +9,7 @@
 }
 
 html {
-    font-size: 16px;
+    font-size: 1rem;
     -webkit-font-smoothing: antialiased;
     background-color: #fff9f2;
 }
@@ -22,13 +22,11 @@ body {
 }
 
 .container {
-    font-family: monospace, "Helvetica Neue", Helvetica, Arial, 'Segoe UI Emoji', sans-serif;
     margin: 0px;
     padding: 0px;
     max-width: 700px;
     margin: auto;
-    line-height: 18px;
-    font-size: 14px;
+    font-size: 0.9rem;
 }
 
 h1 {
@@ -49,9 +47,8 @@ h5,
 h6 {
     position: relative;
     margin-top: 3rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.1rem;
     font-weight: bold;
-    line-height: 1.4;
     cursor: text;
     padding-bottom: 5px;
     font-family: 'Roboto Mono', monospace, "Helvetica Neue", Helvetica, Arial, 'Segoe UI Emoji', sans-serif;
@@ -198,23 +195,19 @@ table td:last-child {
 
 
 
-code tt {
-    border: 1px solid #e7eaed;
-    background-color: #f8f8f8;
-    border-radius: 3px;
-    padding: 0;
-    padding: 2px 4px 0px 4px;
-    font-size: 0.9em;
-}
-
 code {
-    background-color: #f3f3f3;
-    padding: 0 2px 0 2px;
-    border: 1px solid #e7eaed;
+    padding: 2px 4px;
+    border: 0px;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    color: #5bff3f;
+
+    background: #0d1117;
+    white-space: nowrap;
 }
 
 pre {
-    padding: 1rem;
+    /*padding: 1rem;*/
     font-size: 85%;
     line-height: 1.45;
     background-color: #f3f3f3;
@@ -227,6 +220,7 @@ pre {
 pre code {
     border: 0px;
     background-color: transparent;
+    white-space: pre-wrap;
 }
 
 .contains-task-list {
