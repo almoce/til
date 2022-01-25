@@ -18,3 +18,6 @@ tags: [canvas, html, webgl, javascript]
  ```
 
 for morden browser we can choose from '2d' and 'webgl' context, and they can not use in the same context, which mean if we use one can not use another in the same canvas context, the next context would return null.  
+
+
+> This object manages OpenGL state and renders to a drawing bufer, which must is also be created at the same tme of as the context creaton. Create the WebGLRenderingContext object and drawing bufer by calling the getContext method of a given HTMLCanvasElement object with the exact string ‘webgl’. The drawing bufer is also created by getContext.
