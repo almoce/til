@@ -3,3 +3,4 @@ node_modules
 build/docs
 build/index.html
 docs/markdown test.md
+docs/test.md
