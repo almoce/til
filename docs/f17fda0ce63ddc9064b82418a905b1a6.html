@@ -1,0 +1,46 @@
+<!doctypehtml><meta charset=utf8><meta content="IE=edge"http-equiv=X-UA-Compatible><title>create shader program</title><link href=/css.css rel=stylesheet><link href=/highlight.css rel=stylesheet><div class=container><h1 id=create-shader-program>create shader program</h1><ol><li>create a shader, to create a shader use <code>gl.createShader(${shaderType})</code>, shader have two type <code>gl.VERTEX_SHADER</code> and <code>gl.FRAGMENT_SHADER</code><li>load shader source code, <code>gl.shaderSource(${shader}, ${source})</code>, which shader is the shader create from first step from <code>gl.createShader</code>, the source is GLSL source code string.<li>compile the shader <code>gl.compileShader(${shader})</code><li>when we have vertex shader and fragment shader, we have to create and compile for each of them<li>create the shader program <code>gl.createProgram()</code><li>attach the shader to program <code>gl.attachShader(${program}, ${shader})</code><li>link the program to webgl context <code>gl.linkProgram(${program})</code><li>finaly use the shader program in drawing loop, <code>gl.useProgram(${program})</code></ol><pre><code class="hljs language-javascript"><span class=hljs-keyword>const</span> <span class="hljs-variable hljs-constant">VERT_SRC</span> = <span class=hljs-string>`
+precision mediump float;
+void main() {
+  gl_FragColor = vec4(1, 0, 0, 1);
+}
+
+`</span>
+<span class=hljs-keyword>const</span> <span class="hljs-variable hljs-constant">FRAG_SRC</span> = <span class=hljs-string>`
+attribute vec2 position;
+void main() {
+  gl_Position = vec4(position,0,1);
+}
+`</span>
+
+<span class=hljs-keyword>let</span> shaderProgram
+
+<span class=hljs-keyword>function</span> <span class="hljs-function hljs-title">init</span>(<span class=hljs-params>gl</span>) {
+    <span class=hljs-keyword>const</span> vertexShader = <span class="hljs-function hljs-title">loadShader</span>(gl, gl.<span class=hljs-property>VERTEX_SHADER</span>, <span class="hljs-variable hljs-constant">VERT_SRC</span>)
+    <span class=hljs-keyword>const</span> fragmentShader = <span class="hljs-function hljs-title">loadShader</span>(gl, gl.<span class=hljs-property>FRAGMENT_SHADER</span>, <span class="hljs-variable hljs-constant">FRAG_SRC</span>)
+    shaderProgram = gl.<span class="hljs-function hljs-title">createProgram</span>()
+    gl.<span class="hljs-function hljs-title">attachShader</span>(shaderProgram, vertexShader)
+    gl.<span class="hljs-function hljs-title">attachShader</span>(shaderProgram, fragmentShader)
+    gl.<span class="hljs-function hljs-title">linkProgram</span>(shaderProgram)
+}
+
+<span class=hljs-keyword>function</span> <span class="hljs-function hljs-title">draw</span>(<span class=hljs-params>gl</span>) {
+    gl.<span class="hljs-function hljs-title">viewport</span>(<span class=hljs-number>0</span>, <span class=hljs-number>0</span>, gl.<span class=hljs-property>drawingBufferWidth</span>, gl.<span class=hljs-property>drawingBufferHeight</span>)
+    gl.<span class="hljs-function hljs-title">clearColor</span>(<span class=hljs-number>0</span>,<span class=hljs-number>0</span>,<span class=hljs-number>0</span>,<span class=hljs-number>1</span>)
+    gl.<span class="hljs-function hljs-title">clear</span>(gl.<span class=hljs-property>COLOR_BUFFER_BIT</span>)
+    gl.<span class="hljs-function hljs-title">useProgram</span>(shaderProgram)
+
+    <span class=hljs-comment>// draw with buffer</span>
+}
+
+<span class=hljs-keyword>function</span> <span class="hljs-function hljs-title">loadShader</span>(<span class=hljs-params>gl, type, source</span>) {
+    <span class=hljs-keyword>const</span> shader = gl.<span class="hljs-function hljs-title">createShader</span>(type)
+    gl.<span class="hljs-function hljs-title">getShaderSource</span>(shader, source)
+    gl.<span class="hljs-function hljs-title">compileShader</span>(shader)
+    <span class=hljs-keyword>if</span>(!gl.<span class="hljs-function hljs-title">getShaderParameter</span>(shader, gl.<span class=hljs-property>COMPILE_STATUS</span>)) {
+      <span class="hljs-variable hljs-language">console</span>.<span class="hljs-function hljs-title">error</span>(<span class=hljs-string>"Error compiling shader:"</span>, gl.<span class="hljs-function hljs-title">getShaderInfoLog</span>(shader))
+    }
+    <span class=hljs-keyword>return</span> shader
+}
+
+
+</code></pre></div>
