@@ -2,7 +2,7 @@
 tags: [webgl, javascript]
 ---
   
-# webgl buffer and attribute pinter
+# webgl buffer and attribute pointer
 
 ### buffer
 Vertex attributes are read from arrays of binary data called buffers. 
