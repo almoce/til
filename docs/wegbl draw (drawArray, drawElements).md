@@ -1,8 +1,12 @@
+---
+tags: [webgl, javascript]
+---
+
 # wegbl draw (drawArray, drawElements)
 
 ### basic drawing array
   
-**`gl.drawArray(${mode}, ${offset}, ${count})**
+**`gl.drawArray(${mode}, ${offset}, ${count})`**
 - `mode` of primitive (gl.TRIANGLES, gl.LINES, gl.POINTS, gl.LINE_STRIP, gl.LINE_LOOP, gl.TRIANGLE_FAN, gl.TRIANGLE_STRIP)
 - `offset` starting vertex
 - `count` of number of vertices to draw
