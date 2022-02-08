@@ -1,0 +1,80 @@
+<!doctypehtml><meta charset=utf8><meta content="IE=edge"http-equiv=X-UA-Compatible><title>resume webgl simple triangle drawing</title><link href=/css.css rel=stylesheet><link href=/highlight.css rel=stylesheet><div class=container><h1 id=resume-webgl-simple-triangle-drawing>resume webgl simple triangle drawing</h1><p>review the steps to draw a triangle in webgl<ul><li>defined the data, or get the data, prepare the data for render<li>create dom element, get and define the webgl context from canvas<li>create the shader program<ul><li><code>gl.createProgram</code> create a shader program<li><code>gl.createShader</code> create shader from data <code>gl.shaderSource</code>, and compile it <code>gl.compileShader</code>, attach shader <code>gl.attachShader</code> to program, bind the attributes location with <code>gl.bindAttribLocation</code>, then link program to webgl <code>gl.linkProgram</code></ul><li>create the buffer data<ul><li><code>gl.createBuffer</code> to create buffer, <code>gl.bindBuffer</code> bind the buffer to webgl, <code>gl.bufferData</code> set the buffer data<li><code>gl.enableVertexAttribArray</code> enable the vertex pointer with location we had bind in shader attributes, in this case we have <code>position</code> attribute in vertex shader at indices <code>0</code>, <code>vertexAttribPointer</code> set the vertex pointer with data range and type</ul><li>clear up the screen with <code>gl.clearColor</code> and <code>gl.clear</code><li>to get uniform with <code>gl.getUniformLocation</code>, we must get location after we link the program <code>gl.linkProgram</code><li>send command to webgl to use the shader program <code>gl.useProgram</code><li>change the uniform value with <code>gl.uniform3fv</code>/<code>gl.uniform3f</code>, we must set the value after we use program <code>gl.useProgram</code><li>drawing the buffer with shader in screen <code>gl.drawArrays</code></ul><pre><code class="hljs language-javascript">    <span class=hljs-keyword>const</span> <span class="hljs-variable hljs-constant">VERT_SRC</span> = <span class=hljs-string>`
+    precision mediump float;
+    attribute vec2 position;
+    void main() {
+        gl_Position = vec4(position, 0, 1);
+    }
+    `</span>
+    <span class=hljs-keyword>const</span> <span class="hljs-variable hljs-constant">FRAG_SRC</span> = <span class=hljs-string>`
+    precision mediump float;
+    uniform vec3 color;
+    void main() {
+        gl_FragColor = vec4(color, 1);
+    }
+    `</span>
+
+    <span class=hljs-keyword>const</span> <span class="hljs-variable hljs-constant">BUFFER_DATA</span> = [
+        <span class=hljs-number>0</span>, <span class=hljs-number>0.5</span>,
+        -<span class=hljs-number>0.5</span>, -<span class=hljs-number>0.5</span>,
+        <span class=hljs-number>0.5</span>, -<span class=hljs-number>0.5</span> 
+    ]
+
+    <span class=hljs-keyword>const</span> <span class="hljs-variable hljs-constant">ATTRIB_LOC</span> = {
+        <span class=hljs-attr>position</span>: <span class=hljs-number>0</span>
+    }
+
+    <span class=hljs-keyword>let</span> gl, program
+
+    <span class="hljs-title hljs-function">createDomElement</span>()
+    <span class="hljs-title hljs-function">createProgram</span>()
+    <span class="hljs-title hljs-function">createBuffer</span>()
+    
+    <span class="hljs-title hljs-function">draw</span>()
+
+    <span class=hljs-keyword>function</span> <span class="hljs-title hljs-function">draw</span>(<span class=hljs-params></span>) {
+        gl.<span class="hljs-title hljs-function">viewport</span>(<span class=hljs-number>0</span>, <span class=hljs-number>0</span>, gl.<span class=hljs-property>drawingBufferWidth</span>, gl.<span class=hljs-property>drawingBufferHeight</span>)
+        gl.<span class="hljs-title hljs-function">clearColor</span>(<span class=hljs-number>1</span>,<span class=hljs-number>0</span>,<span class=hljs-number>0</span>,<span class=hljs-number>1</span>)
+        gl.<span class="hljs-title hljs-function">clear</span>(gl.<span class=hljs-property>COLOR_BUFFER_BIT</span>)
+        <span class=hljs-keyword>const</span> color = gl.<span class="hljs-title hljs-function">getUniformLocation</span>(program, <span class=hljs-string>'color'</span>)
+        gl.<span class="hljs-title hljs-function">useProgram</span>(program)
+        gl.<span class="hljs-title hljs-function">uniform3fv</span>(color, [<span class="hljs-title hljs-class">Math</span>.<span class="hljs-title hljs-function">random</span>(),<span class="hljs-title hljs-class">Math</span>.<span class="hljs-title hljs-function">random</span>(),<span class="hljs-title hljs-class">Math</span>.<span class="hljs-title hljs-function">random</span>()])
+        gl.<span class="hljs-title hljs-function">drawArrays</span>(gl.<span class=hljs-property>TRIANGLES</span>, <span class=hljs-number>0</span>, <span class=hljs-number>3</span>)
+        <span class="hljs-title hljs-function">requestAnimationFrame</span>(draw)
+    }
+
+    <span class=hljs-keyword>function</span> <span class="hljs-title hljs-function">createBuffer</span>(<span class=hljs-params></span>) {
+        <span class=hljs-keyword>const</span> buffer = gl.<span class="hljs-title hljs-function">createBuffer</span>()
+        gl.<span class="hljs-title hljs-function">bindBuffer</span>(gl.<span class=hljs-property>ARRAY_BUFFER</span>, buffer)
+        gl.<span class="hljs-title hljs-function">bufferData</span>(gl.<span class=hljs-property>ARRAY_BUFFER</span>, <span class=hljs-keyword>new</span> <span class="hljs-title hljs-class">Float32Array</span>(<span class="hljs-variable hljs-constant">BUFFER_DATA</span>), gl.<span class=hljs-property>STATIC_DRAW</span>)
+        gl.<span class="hljs-title hljs-function">enableVertexAttribArray</span>(<span class="hljs-variable hljs-constant">ATTRIB_LOC</span>[<span class=hljs-string>'position'</span>])
+        gl.<span class="hljs-title hljs-function">vertexAttribPointer</span>(<span class=hljs-number>0</span>, <span class=hljs-number>2</span>, gl.<span class=hljs-property>FLOAT</span>, <span class=hljs-literal>false</span>, <span class=hljs-number>0</span>, <span class=hljs-number>0</span>)
+    }
+
+    <span class=hljs-keyword>function</span> <span class="hljs-title hljs-function">createProgram</span>(<span class=hljs-params></span>) {
+        program = gl.<span class="hljs-title hljs-function">createProgram</span>()
+        <span class=hljs-keyword>const</span> vertex = <span class="hljs-title hljs-function">createShader</span>(gl.<span class=hljs-property>VERTEX_SHADER</span>, <span class="hljs-variable hljs-constant">VERT_SRC</span>)
+        <span class=hljs-keyword>const</span> frag = <span class="hljs-title hljs-function">createShader</span>(gl.<span class=hljs-property>FRAGMENT_SHADER</span>, <span class="hljs-variable hljs-constant">FRAG_SRC</span>)
+        gl.<span class="hljs-title hljs-function">attachShader</span>(program, vertex)
+        gl.<span class="hljs-title hljs-function">attachShader</span>(program, frag)
+        gl.<span class="hljs-title hljs-function">bindAttribLocation</span>(program, <span class="hljs-variable hljs-constant">ATTRIB_LOC</span>[<span class=hljs-string>'position'</span>], <span class=hljs-string>'position'</span>)
+        gl.<span class="hljs-title hljs-function">linkProgram</span>(program)
+        <span class=hljs-keyword>if</span> (!gl.<span class="hljs-title hljs-function">getProgramParameter</span>(program, gl.<span class=hljs-property>LINK_STATUS</span>)) {
+            <span class="hljs-variable hljs-language">console</span>.<span class="hljs-title hljs-function">warn</span>(<span class=hljs-string>'Unable to initialize the shader program: '</span> + gl.<span class="hljs-title hljs-function">getProgramInfoLog</span>(program));
+            <span class=hljs-keyword>return</span> <span class=hljs-literal>null</span>;
+        }
+
+    }
+    <span class=hljs-keyword>function</span> <span class="hljs-title hljs-function">createShader</span>(<span class=hljs-params>type, source</span>) {
+        <span class=hljs-keyword>const</span> shader = gl.<span class="hljs-title hljs-function">createShader</span>(type)
+        gl.<span class="hljs-title hljs-function">shaderSource</span>(shader, source)
+        gl.<span class="hljs-title hljs-function">compileShader</span>(shader)
+        <span class=hljs-keyword>return</span> shader
+    }
+    <span class=hljs-keyword>function</span> <span class="hljs-title hljs-function">createDomElement</span>(<span class=hljs-params></span>) {
+        <span class=hljs-keyword>const</span> canvas = <span class="hljs-variable hljs-language">document</span>.<span class="hljs-title hljs-function">createElement</span>(<span class=hljs-string>'canvas'</span>)
+        canvas.<span class=hljs-property>width</span> = <span class="hljs-variable hljs-language">window</span>.<span class=hljs-property>innerWidth</span>
+        canvas.<span class=hljs-property>height</span> = <span class="hljs-variable hljs-language">window</span>.<span class=hljs-property>innerHeight</span>
+        <span class="hljs-variable hljs-language">document</span>.<span class=hljs-property>body</span>.<span class="hljs-title hljs-function">appendChild</span>(canvas)
+        gl = canvas.<span class="hljs-title hljs-function">getContext</span>(<span class=hljs-string>'webgl'</span>)
+    }
+</code></pre></div>
