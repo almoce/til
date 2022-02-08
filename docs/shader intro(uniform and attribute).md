@@ -14,8 +14,8 @@ void main() {
 }
 ```
 
-1. get the uniform location in shader program, `gl.getUniformLocation(${shaderProgram}, ${uniformVaraibleName})`, *shaderProgram* is the program created from shader `gl.createProgram()`, and the *uniformVariableName* is the same name defined in the shader source code string
-2. set the uniform variable with `gl.uniform3f`
+1. get the uniform location in shader program, `gl.getUniformLocation(${shaderProgram}, ${uniformVaraibleName})`, *shaderProgram* is the program created from shader `gl.createProgram()`, and the *uniformVariableName* is the same name defined in the shader source code string, this step should be use after `gl.linkProgram` and before `gl.useProgram`
+2. set the uniform variable with `gl.uniform3f`, to set value this command should called after `gl.useProgram`, so that can set the current location of program.
 
 ```javascript
 /*
@@ -24,9 +24,11 @@ void main() {
 */
 let colorLocatoin
 function init(gl) {
+    // gl.linkProgram(program)
     colorLocatoin = gl.getUnioformLocation(program, 'color')
 }
 function draw(gl) {
+    // gl.useProgram(program)
     gl.uniform3f(colorLocatoin, 1, 0, 0)
     // or
     gl.uniform3fv(colorLocatoin, [1,0,0])
@@ -53,7 +55,7 @@ function draw(gl) {
 Attributes are processed by the vertex shader and used to generate primitives, which are then rasterized by the GPU.
 in javascirpt, store the varialbe as buffer atrribute, and those attributes will pass and process by vertex shader. attribute location are integers and stored in buffer.
 
-1. set an attribute location `gl.bindAttribLocation(${program}, ${locationInterger}, ${attributeName})`, this step should called before we link the program `gl.createProgram()`
+1. set an attribute location `gl.bindAttribLocation(${program}, ${locationInterger}, ${attributeName})`, this step should called before we link the program `gl.linkProgram()`
 
 ```javascript
 gl.bindAttribLocation(program, 0, 'position')
