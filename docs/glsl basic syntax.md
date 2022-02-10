@@ -10,13 +10,13 @@ tags: [glsl]
 - bvec2, bvec3, bvec4: Boolean vector
 - ivec2, ivec3, ivec4: Integer vector
 - vec2, vec3, vec4: Floating point vector
-```glsl
+```
 int position;
 bool a, b;
 bool c = true;
 int v = 1
 ```
-```glsl
+```
 //Declares a 3D medium precision floating point
 //vector with components (1,2,3)
 vec3 v(1.0, 2.0, 3.0);
@@ -37,7 +37,7 @@ ivec3 q(1,0,-1);
 - `+,-,*,/,<,>,<=,>=,==,!=`, operator
 - `=, +=,-=,*=,/=,++,-- `, assignment operator
 
-```glsl
+```
 //Declare floats x and y
 mediump float x = 1.0, y = -2.0;
 
@@ -52,7 +52,7 @@ z += 2.0 * x;
 ```
 
 ### procedures
-```glsl
+```
 //Declare a subroutine called "addTwoInts"
 //with return type "int" that accepts two
 //arguments, "x" and "y" both int type
@@ -71,20 +71,20 @@ void doNothing() {
 - `lowp`, lowest precision
 - `mediump`, default medium precision
 - `highp`, highest precision  
-```glsl
+```
 // Declare a low precision float called t
 lowp float t = 1.0;  
 mediump float middle;
 highp float zzz = -1.5;
 ```
-```glsl
+```
 precision highp float;  
 //Equivalent to: highp float x = -0.1;
 float x = -0.1;  
 ```
 
 ### constans
-```glsl
+```
 const highp float PI = 3.14159265359;
 ```
 ### in/out
@@ -92,7 +92,7 @@ const highp float PI = 3.14159265359;
 - `inout` pass the argument by reference
 - `out` the argument not initialized, writing too the value update the parameter
 - `const` the argument is constant value  
-```glsl
+```
 precision mediump float;
 
 void testFunction(
@@ -139,13 +139,13 @@ void test() {
 
 ### swizzles
 syntactic sugar, `xyzw`, `rgba`, and `stuv`
-```glsl
+```
 vec4 p = vec4(1, 2, 3, 4);
 vec2 q = p.xy;   //q = vec2(1, 2)
 vec3 r = p.bgr;  //r = vec3(3, 2, 1)
 vec3 a = p.xxy;  //a = vec3(1, 1, 2)
 ```
-```glsl
+```
 vec4 a = vec4(1, 2, 3, 4);
 vec4 b = vec4(5, 6, 7, 8);
 
@@ -156,7 +156,7 @@ vec4 e = a * b;    //e = vec4(5, 12, 21, 32);
 
 ### loop
 terminate loop with `break` or skip iteration with `continue`
-```glsl
+```
 // for
 float x = 0.0;
 for(int i=0; i<100; ++i) {
@@ -171,7 +171,7 @@ while(i < 10) {
 
 ### matrices
  mat2, mat3, mat4 which correspond to a 2x2, 3x3 and 4x4 square matrix respectively. [^Matrix]
-```glsl
+```
 //Create a a 2x2 identity matrix.  Note matrix
 //constructors are in column major order.
 mat2 I = mat2(1.0, 0.0,
@@ -192,7 +192,7 @@ mat3 J = mat3(a, b, c);
 //         1, 0, 0,
 //         0, 0, 4);
 ```
-```glsl
+```
 mat3 m = mat3(1.1, 2.1, 3.1,
               1.2, 2.2, 3.2,
               1.3, 2.3, 3.3);
