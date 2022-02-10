@@ -1,3 +1,6 @@
+---
+tags: [glsl]
+---
 # glsl basic syntax
 
 ### variables
