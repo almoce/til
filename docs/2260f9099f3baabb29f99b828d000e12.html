@@ -1,0 +1,121 @@
+<!doctypehtml><meta charset=utf8><meta content="IE=edge"http-equiv=X-UA-Compatible><title>glsl basic syntax</title><link href=/css.css rel=stylesheet><link href=/highlight.css rel=stylesheet><div class=container><h1 id=glsl-basic-syntax>glsl basic syntax</h1><h3 id=variables>variables</h3><ul><li><code>bool</code> boolean value, true or false<li><code>int</code> signed integer number<li><code>float</code> fractional number<li>bvec2, bvec3, bvec4: Boolean vector<li>ivec2, ivec3, ivec4: Integer vector<li>vec2, vec3, vec4: Floating point vector</ul><pre><code class="hljs language-ini">int position<span class=hljs-comment>;</span>
+bool a, b<span class=hljs-comment>;</span>
+bool <span class=hljs-attr>c</span> = <span class=hljs-literal>true</span><span class=hljs-comment>;</span>
+int <span class=hljs-attr>v</span> = <span class=hljs-number>1</span>
+</code></pre><pre><code class="hljs language-scss"><span class=hljs-comment>//Declares a 3D medium precision floating point</span>
+<span class=hljs-comment>//vector with components (1,2,3)</span>
+vec3 <span class=hljs-built_in>v</span>(<span class=hljs-number>1.0</span>, <span class=hljs-number>2.0</span>, <span class=hljs-number>3.0</span>);
+<span class=hljs-comment>//Create a low precision 2D vector with all</span>
+<span class=hljs-comment>//components set to 2</span>
+lowp vec2 <span class=hljs-selector-tag>p</span> = <span class=hljs-built_in>vec2</span>(<span class=hljs-number>2.0</span>);  
+<span class=hljs-comment>//Unpack first 3 components from v into q and</span>
+<span class=hljs-comment>//set last component to 1.0</span>
+highp vec4 <span class=hljs-selector-tag>q</span> = <span class=hljs-built_in>vec4</span>(v, <span class=hljs-number>1.0</span>);  
+<span class=hljs-comment>//A 2D boolean vector with true and false</span>
+<span class=hljs-comment>//components</span>
+bvec2 <span class=hljs-built_in>foo</span>(true, false);
+<span class=hljs-comment>//A 3D integer vector with components 1,0,-1</span>
+ivec3 <span class=hljs-selector-tag>q</span>(<span class=hljs-number>1</span>,<span class=hljs-number>0</span>,-<span class=hljs-number>1</span>);
+</code></pre><h3 id=operator>operator</h3><ul><li><code>+,-,*,/,&#60,>,&#60=,>=,==,!=</code>, operator<li><code>=, +=,-=,*=,/=,++,-- </code>, assignment operator</ul><pre><code class="hljs language-ini">//Declare floats x and y
+mediump float <span class=hljs-attr>x</span> = <span class=hljs-number>1.0</span>, y = -<span class=hljs-number>2.0</span><span class=hljs-comment>;</span>
+
+//Now: <span class=hljs-attr>z</span> = x + <span class=hljs-number>3</span> * y = -<span class=hljs-number>5</span>
+mediump float <span class=hljs-attr>z</span> = x + <span class=hljs-number>3.0</span> * y<span class=hljs-comment>;</span>
+
+//Add 1 to x, so now: <span class=hljs-attr>x</span> = <span class=hljs-number>2</span>
+x++<span class=hljs-comment>;  </span>
+
+//Now: <span class=hljs-attr>z</span> = -<span class=hljs-number>1</span>
+z += 2.0 * x<span class=hljs-comment>;</span>
+</code></pre><h3 id=procedures>procedures</h3><pre><code class="hljs language-sql"><span class=hljs-operator>/</span><span class=hljs-operator>/</span><span class=hljs-keyword>Declare</span> a subroutine <span class=hljs-keyword>called</span> "addTwoInts"
+<span class=hljs-operator>/</span><span class=hljs-operator>/</span><span class=hljs-keyword>with</span> <span class=hljs-keyword>return</span> type "int" that accepts two
+<span class=hljs-operator>/</span><span class=hljs-operator>/</span>arguments, "x" <span class=hljs-keyword>and</span> "y" <span class=hljs-keyword>both</span> <span class=hljs-type>int</span> type
+<span class=hljs-type>int</span> addTwoInts(<span class=hljs-type>int</span> x, <span class=hljs-type>int</span> y) {
+  <span class=hljs-operator>/</span><span class=hljs-operator>/</span>Use a <span class=hljs-keyword>return</span> statement <span class=hljs-keyword>to</span> <span class=hljs-keyword>return</span> a <span class=hljs-keyword>value</span>
+  <span class=hljs-keyword>return</span> x <span class=hljs-operator>+</span> y;
+}
+
+<span class=hljs-operator>/</span><span class=hljs-operator>/</span><span class=hljs-keyword>To</span> <span class=hljs-keyword>declare</span> a subroutine that does <span class=hljs-keyword>not</span>
+<span class=hljs-operator>/</span><span class=hljs-operator>/</span><span class=hljs-keyword>return</span> a <span class=hljs-keyword>value</span>, give it the <span class=hljs-keyword>return</span> type "void"
+void doNothing() {
+}
+</code></pre><h3 id=precision-specifier>precision specifier</h3><ul><li><code>lowp</code>, lowest precision<li><code>mediump</code>, default medium precision<li><code>highp</code>, highest precision</ul><pre><code class="hljs language-ini">// Declare a low precision float called t
+lowp float <span class=hljs-attr>t</span> = <span class=hljs-number>1.0</span><span class=hljs-comment>;  </span>
+mediump float middle<span class=hljs-comment>;</span>
+highp float <span class=hljs-attr>zzz</span> = -<span class=hljs-number>1.5</span><span class=hljs-comment>;</span>
+</code></pre><pre><code class="hljs language-ini">precision highp float<span class=hljs-comment>;  </span>
+//Equivalent to: highp float <span class=hljs-attr>x</span> = -<span class=hljs-number>0.1</span><span class=hljs-comment>;</span>
+float <span class=hljs-attr>x</span> = -<span class=hljs-number>0.1</span><span class=hljs-comment>;  </span>
+</code></pre><h3 id=constans>constans</h3><pre><code class="hljs language-ini">const highp float <span class=hljs-attr>PI</span> = <span class=hljs-number>3.14159265359</span><span class=hljs-comment>;</span>
+</code></pre><h3 id=inout>in/out</h3><ul><li><code>in</code> passes the argument by value (default)<li><code>inout</code> pass the argument by reference<li><code>out</code> the argument not initialized, writing too the value update the parameter<li><code>const</code> the argument is constant value</ul><pre><code class="hljs language-csharp">precision mediump <span class=hljs-built_in>float</span>;
+
+<span class=hljs-function><span class=hljs-keyword>void</span> <span class=hljs-title>testFunction</span>(<span class=hljs-params>
+  <span class=hljs-keyword>in</span> <span class=hljs-built_in>float</span> x,
+  inout <span class=hljs-built_in>float</span> y,
+  <span class=hljs-keyword>out</span> <span class=hljs-built_in>float</span> z,
+  <span class=hljs-keyword>const</span> <span class=hljs-built_in>float</span> w
+</span>)</span> {
+  x += <span class=hljs-number>1.0</span>;
+  y += x;
+  z = x + y + w;
+}
+
+<span class=hljs-function><span class=hljs-keyword>void</span> <span class=hljs-title>test</span>()</span> {
+  <span class=hljs-built_in>float</span> x=<span class=hljs-number>1.0</span>, y=<span class=hljs-number>1.0</span>, z=<span class=hljs-number>0.0</span>, w=<span class=hljs-number>-1.0</span>;
+
+  testFunction(x, y, z, w);
+
+  <span class=hljs-comment>//Now:</span>
+  <span class=hljs-comment>//  x == 1.0</span>
+  <span class=hljs-comment>//  y == 3.0</span>
+  <span class=hljs-comment>//  z == 4.0</span>
+  <span class=hljs-comment>//  w == -1.0</span>
+}
+</code></pre><h3 id=built-ins-functions>built-ins functions</h3><ul><li>Unit conversion: <code>radians</code>, <code>degrees</code><li>Trigonometry: <code>sin</code>, <code>cos</code>, <code>tan</code>, <code>asin</code>, <code>acos</code>, <code>atan</code><li>Calculus: <code>exp</code>, <code>log</code>, <code>exp2</code>, <code>log2</code><li>Algebra: <code>pow</code>, <code>sqrt</code>, <code>inversesqrt</code><li>Rounding: <code>floor</code>, <code>ceil</code>, <code>fract</code>, <code>mod</code>, <code>step</code><li>Magnitude: <code>abs</code>, <code>sign</code>, <code>min</code>, <code>max</code>, <code>clamp</code><li>Interpolation: <code>mix</code><li>Geometric:<ul><li><code>length(p)</code> returns the euclidean length of p<li><code>distance(a,b)</code> returns the euclidean distance between a and b<li><code>dot(a,b)</code> computes vector dot product of a and b<li><code>cross(a,b)</code> computes the cross product of two 3 vectors<li><code>normalize(a)</code> rescales a to unit length<li><code>faceforward(n, I, nr)</code> reorient a normal to point away from a surface<li><code>reflect(I, N)</code> - reflects a vector I along the axis N<li><code>refract(I, N, eta)</code> - applies a refractive transformation to I according to Snell's law</ul></ul><h3 id=swizzles>swizzles</h3><p>syntactic sugar, <code>xyzw</code>, <code>rgba</code>, and <code>stuv</code><pre><code class="hljs language-ini">vec4 <span class=hljs-attr>p</span> = vec4(<span class=hljs-number>1</span>, <span class=hljs-number>2</span>, <span class=hljs-number>3</span>, <span class=hljs-number>4</span>)<span class=hljs-comment>;</span>
+vec2 <span class=hljs-attr>q</span> = p.xy<span class=hljs-comment>;   //q = vec2(1, 2)</span>
+vec3 <span class=hljs-attr>r</span> = p.bgr<span class=hljs-comment>;  //r = vec3(3, 2, 1)</span>
+vec3 <span class=hljs-attr>a</span> = p.xxy<span class=hljs-comment>;  //a = vec3(1, 1, 2)</span>
+</code></pre><pre><code class="hljs language-ini">vec4 <span class=hljs-attr>a</span> = vec4(<span class=hljs-number>1</span>, <span class=hljs-number>2</span>, <span class=hljs-number>3</span>, <span class=hljs-number>4</span>)<span class=hljs-comment>;</span>
+vec4 <span class=hljs-attr>b</span> = vec4(<span class=hljs-number>5</span>, <span class=hljs-number>6</span>, <span class=hljs-number>7</span>, <span class=hljs-number>8</span>)<span class=hljs-comment>;</span>
+
+vec4 <span class=hljs-attr>c</span> = a + b<span class=hljs-comment>;    //c = vec4(6, 8, 10, 12);</span>
+vec4 <span class=hljs-attr>d</span> = a * <span class=hljs-number>3.0</span><span class=hljs-comment>;  //d = vec4(3, 6, 9, 12);</span>
+vec4 <span class=hljs-attr>e</span> = a * b<span class=hljs-comment>;    //e = vec4(5, 12, 21, 32);</span>
+</code></pre><h3 id=loop>loop</h3><p>terminate loop with <code>break</code> or skip iteration with <code>continue</code><pre><code class="hljs language-ini">// for
+float <span class=hljs-attr>x</span> = <span class=hljs-number>0.0</span><span class=hljs-comment>;</span>
+for(int <span class=hljs-attr>i</span>=<span class=hljs-number>0</span><span class=hljs-comment>; i&lt;100; ++i) {</span>
+  x += i<span class=hljs-comment>;   //Executes 100 times</span>
+}
+// while
+int <span class=hljs-attr>i</span> = <span class=hljs-number>0</span><span class=hljs-comment>;</span>
+while(i &#60 10) {
+  <span class=hljs-attr>i</span> = i + <span class=hljs-number>1</span><span class=hljs-comment>;</span>
+}
+</code></pre><h3 id=matrices>matrices</h3><p>mat2, mat3, mat4 which correspond to a 2x2, 3x3 and 4x4 square matrix respectively. <sup><a href=#user-content-fn-matrix aria-describedby=footnote-label data-footnote-ref id=user-content-fnref-matrix>1</a></sup><pre><code class="hljs language-scss"><span class=hljs-comment>//Create a a 2x2 identity matrix.  Note matrix</span>
+<span class=hljs-comment>//constructors are in column major order.</span>
+mat2 <span class=hljs-selector-tag>I</span> = <span class=hljs-built_in>mat2</span>(<span class=hljs-number>1.0</span>, <span class=hljs-number>0.0</span>,
+              <span class=hljs-number>0.0</span>, <span class=hljs-number>1.0</span>);
+
+<span class=hljs-comment>//Equivalently,</span>
+mat2 <span class=hljs-selector-tag>I</span> = <span class=hljs-built_in>mat2</span>(<span class=hljs-number>1.0</span>);
+
+<span class=hljs-comment>//Matrices can also be constructed by</span>
+<span class=hljs-comment>//giving columns:</span>
+vec3 <span class=hljs-selector-tag>a</span> = <span class=hljs-built_in>vec3</span>(<span class=hljs-number>0</span>, <span class=hljs-number>1</span>, <span class=hljs-number>0</span>);
+vec3 <span class=hljs-selector-tag>b</span> = <span class=hljs-built_in>vec3</span>(<span class=hljs-number>2</span>, <span class=hljs-number>0</span>, <span class=hljs-number>0</span>);
+vec3 c = <span class=hljs-built_in>vec3</span>(<span class=hljs-number>0</span>, <span class=hljs-number>0</span>, <span class=hljs-number>4</span>);
+mat3 J = <span class=hljs-built_in>mat3</span>(a, b, c);
+
+<span class=hljs-comment>//Now:</span>
+<span class=hljs-comment>//J = mat3(0, 2, 0,</span>
+<span class=hljs-comment>//         1, 0, 0,</span>
+<span class=hljs-comment>//         0, 0, 4);</span>
+</code></pre><pre><code class="hljs language-ini">mat3 <span class=hljs-attr>m</span> = mat3(<span class=hljs-number>1.1</span>, <span class=hljs-number>2.1</span>, <span class=hljs-number>3.1</span>,
+              1.2, 2.2, 3.2,
+              1.3, 2.3, 3.3)<span class=hljs-comment>;</span>
+
+//Read out first column of m
+vec3 <span class=hljs-attr>a</span> = m[<span class=hljs-number>0</span>]<span class=hljs-comment>;</span>
+
+//Now: <span class=hljs-attr>a</span> = vec3(<span class=hljs-number>1.1</span>, <span class=hljs-number>2.1</span>, <span class=hljs-number>3.1</span>)<span class=hljs-comment>;</span>
+</code></pre><hr><section class=footnotes data-footnotes><h2 class=sr-only id=footnote-label>Footnotes</h2><ol><li id=user-content-fn-matrix><p><a href=https://en.wikipedia.org/wiki/Matrix_(mathematics)>Matrix_(mathematics) - Wikipedia</a> <a href=#user-content-fnref-matrix aria-label="Back to content"class=data-footnote-backref data-footnote-backref>↩</a></ol></section></div>
