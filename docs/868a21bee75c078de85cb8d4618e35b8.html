@@ -1,0 +1,21 @@
+<!doctypehtml><meta charset=utf8><meta content="IE=edge"http-equiv=X-UA-Compatible><title>apply the morphinfluence to the geometry vertice</title><link href=/css.css rel=stylesheet><link href=/highlight.css rel=stylesheet><div class=container><h1 id=apply-the-morphtargetinfluences-to-the-geometry-vertice-for-animation-scenery>apply the morphTargetInfluences to the geometry vertice for animation scenery</h1><p>if the geometry shape have the <code>morphAttributes</code> with the influence attribution to modify dynamically the shape. but in some case, we have the animation frames, which also apply the influence to the geometry, if we want to keep the change before apply the animation, we have to modify the vertice.<pre><code class="hljs language-javascript">
+<span class=hljs-comment>// const mesh = Three.Mesh</span>
+<span class=hljs-comment>// const influences = [1,2,3,4,5,6] // modified influences</span>
+
+<span class=hljs-keyword>const</span> position = mesh.<span class=hljs-property>geometry</span>.<span class=hljs-property>attributes</span>.<span class=hljs-property>position</span> <span class=hljs-comment>// get the position buffer from geometry</span>
+
+<span class=hljs-keyword>for</span> (<span class=hljs-keyword>let</span> i = <span class=hljs-number>0</span> ; i&#60 position.<span class=hljs-property>count</span>; i++) {
+    <span class=hljs-keyword>const</span> base = <span class=hljs-keyword>new</span> T.<span class="hljs-title hljs-class">Vector3</span>()
+    base.<span class="hljs-title hljs-function">fromBufferAttribute</span>(position, i) <span class=hljs-comment>// Sets this vector's x, y and z values from the attribute.</span>
+    base.<span class="hljs-title hljs-function">applyMatrix4</span>(mesh.<span class=hljs-property>matrixWorld</span>) <span class=hljs-comment>// multiplies to worldMatrix and divide by perspective</span>
+    <span class="hljs-title hljs-class">Object</span>.<span class="hljs-title hljs-function">entries</span>(influences).<span class="hljs-title hljs-function">forEach</span>(<span class=hljs-function>(<span class=hljs-params>[key, value]</span>) =></span> {
+        <span class=hljs-keyword>const</span> index = mesh.<span class=hljs-property>morphTargetDictionary</span>[key] <span class=hljs-comment>// get the index from the target dictionary</span>
+        base.<span class=hljs-property>x</span> += mesh.<span class=hljs-property>geometry</span>.<span class=hljs-property>morphAttributes</span>.<span class=hljs-property>position</span>[index].<span class="hljs-title hljs-function">getX</span>(i) * value; <span class=hljs-comment>// multiply the x axies to influence</span>
+        base.<span class=hljs-property>y</span> += mesh.<span class=hljs-property>geometry</span>.<span class=hljs-property>morphAttributes</span>.<span class=hljs-property>position</span>[index].<span class="hljs-title hljs-function">getY</span>(i) * value; <span class=hljs-comment>// multiply the y axies to influence</span>
+        base.<span class=hljs-property>z</span> += mesh.<span class=hljs-property>geometry</span>.<span class=hljs-property>morphAttributes</span>.<span class=hljs-property>position</span>[index].<span class="hljs-title hljs-function">getZ</span>(i) * value; <span class=hljs-comment>// multiply the z axies to influence</span>
+    })
+    mesh.<span class=hljs-property>geometry</span>.<span class=hljs-property>attributes</span>.<span class=hljs-property>position</span>.<span class="hljs-title hljs-function">setXYZ</span>(i, base.<span class=hljs-property>x</span> , base.<span class=hljs-property>y</span> , base.<span class=hljs-property>z</span>) <span class=hljs-comment>// set the result transformation to position buffer attribute</span>
+}
+mesh.<span class=hljs-property>geometry</span>.<span class=hljs-property>attributes</span>.<span class=hljs-property>position</span>.<span class=hljs-property>needsUpdate</span> = <span class=hljs-literal>true</span>; <span class=hljs-comment>// notify the gpu to update in render</span>
+
+</code></pre></div>
