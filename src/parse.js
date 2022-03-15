@@ -5,10 +5,11 @@ import remarkRehype from 'remark-rehype'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkParseFrontmatter from 'remark-parse-frontmatter'
 import remarkGemoji from 'remark-gemoji'
+import remarkMath from 'remark-math'
 import rehypeStringify from 'rehype-stringify'
 import rehypeHighlight from 'rehype-highlight'
 import rehypeSlug from 'rehype-slug'
-
+import rehypeKatex from 'rehype-katex'
 import {rehype} from 'rehype'
 import rehypePresetMinify from 'rehype-preset-minify'
 
@@ -23,11 +24,13 @@ export async function parseMarkDown(filePath) {
   const contentString = await getFileContent(filePath)
   const file = await unified()
     .use(remarkParse)
+    .use(remarkMath)
     .use(remarkFrontmatter)
     .use(remarkParseFrontmatter)
     .use(remarkGfm)
     .use(remarkGemoji)
     .use(remarkRehype)
+    .use(rehypeKatex)
     .use(rehypeSlug)
     .use(rehypeHighlight)
     .use(rehypeStringify)
