@@ -1,3 +1,6 @@
+---
+tags: [math, javascript]
+---
 # degree and radian, and the x,y
 
 - $radian=degree \times \frac{\pi}{180}$

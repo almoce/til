@@ -8,3 +8,4 @@
 * [x] markdown parse
 * [x] html style makeup
 * [x] github automation
+* [x] add support for math katex/latex
