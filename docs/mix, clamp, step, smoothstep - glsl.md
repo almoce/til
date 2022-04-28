@@ -11,6 +11,9 @@ tags: [javascript, glsl, shader]
 - mix(x, y, 0.0) = x
 - mix(x, y, 1.0) = y
 
+### clamp
+> return value by defined min and max range
+`clamp(n, min, max)`
 
 ### step
 > return value 0 or 1 by the defined edge value
