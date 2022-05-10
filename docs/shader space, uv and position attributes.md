@@ -28,12 +28,12 @@ const uvs = new Float32Array([
     ])
 boxBuffer.setAttribute( 'position', new T.BufferAttribute( vertices, 3 ) );
 boxBuffer.setAttribute('uv', new T.BufferAttribute(uvs, 2))
-```
 
-D-------C
-|		|
-|		|
-A-------B
+D-----C  
+|   / |  
+| /   |  
+A-----B  
+```
 
 constructor the mesh with the float array, each point contain 3 vertives, form a triangle face, with 2 triangle face form a quadrilateral.
 
