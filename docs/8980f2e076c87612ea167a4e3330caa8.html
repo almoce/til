@@ -21,4 +21,9 @@
     ])
 boxBuffer.<span class="hljs-title hljs-function">setAttribute</span>( <span class=hljs-string>'position'</span>, <span class=hljs-keyword>new</span> T.<span class="hljs-title hljs-class">BufferAttribute</span>( vertices, <span class=hljs-number>3</span> ) );
 boxBuffer.<span class="hljs-title hljs-function">setAttribute</span>(<span class=hljs-string>'uv'</span>, <span class=hljs-keyword>new</span> T.<span class="hljs-title hljs-class">BufferAttribute</span>(uvs, <span class=hljs-number>2</span>))
-</code></pre><p>D-------C | | | | A-------B<p>constructor the mesh with the float array, each point contain 3 vertives, form a triangle face, with 2 triangle face form a quadrilateral.<p>uvs attributes for uv mapping, uv as 2d space using only x,y coordination. each 2 value corresponding the respect point in local space witch corresponding with shader mapping space.</div>
+
+D-----C  
+|   / |  
+| /   |  
+A-----B  
+</code></pre><p>constructor the mesh with the float array, each point contain 3 vertives, form a triangle face, with 2 triangle face form a quadrilateral.<p>uvs attributes for uv mapping, uv as 2d space using only x,y coordination. each 2 value corresponding the respect point in local space witch corresponding with shader mapping space.</div>
