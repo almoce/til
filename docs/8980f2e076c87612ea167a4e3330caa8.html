@@ -1,0 +1,24 @@
+<!doctypehtml><meta charset=utf8><meta content="IE=edge"http-equiv=X-UA-Compatible><title>shader space, uv and position attributes</title><link href=/css.css rel=stylesheet><link href=/highlight.css rel=stylesheet><div class=container><h1 id=shader-space-uv-and-position>shader space, uv and position</h1><pre><code class="hljs language-javascript"><span class=hljs-keyword>const</span> boxBuffer = <span class=hljs-keyword>new</span> T.<span class="hljs-title hljs-class">BufferGeometry</span>()
+<span class=hljs-keyword>const</span> vertices = <span class=hljs-keyword>new</span> <span class="hljs-title hljs-class">Float32Array</span>([
+    <span class=hljs-comment>// Triangle Face</span>
+    -<span class=hljs-number>1.0</span>, -<span class=hljs-number>1.0</span>,  <span class=hljs-number>1.0</span>, <span class=hljs-comment>// 0 - A</span>
+     <span class=hljs-number>1.0</span>, -<span class=hljs-number>1.0</span>,  <span class=hljs-number>1.0</span>, <span class=hljs-comment>// 1 - B</span>
+     <span class=hljs-number>1.0</span>,  <span class=hljs-number>1.0</span>,  <span class=hljs-number>1.0</span>, <span class=hljs-comment>// 2 - C</span>
+    
+    <span class=hljs-comment>// Triangle Face</span>
+     <span class=hljs-number>1.0</span>,  <span class=hljs-number>1.0</span>,  <span class=hljs-number>1.0</span>, <span class=hljs-comment>// 3 - C</span>
+    -<span class=hljs-number>1.0</span>,  <span class=hljs-number>1.0</span>,  <span class=hljs-number>1.0</span>, <span class=hljs-comment>// 4 - D</span>
+    -<span class=hljs-number>1.0</span>, -<span class=hljs-number>1.0</span>,  <span class=hljs-number>1.0</span> <span class=hljs-comment>// 5 - A</span>
+])
+
+<span class=hljs-keyword>const</span> uvs = <span class=hljs-keyword>new</span> <span class="hljs-title hljs-class">Float32Array</span>([
+    <span class=hljs-number>0</span>,<span class=hljs-number>1</span>, <span class=hljs-comment>// 0 - A</span>
+    <span class=hljs-number>1</span>,<span class=hljs-number>1</span>, <span class=hljs-comment>// 1 - B</span>
+    <span class=hljs-number>1</span>,<span class=hljs-number>0</span>, <span class=hljs-comment>// 2 - C</span>
+    <span class=hljs-number>1</span>,<span class=hljs-number>0</span>, <span class=hljs-comment>// 3 - C</span>
+    <span class=hljs-number>0</span>,<span class=hljs-number>0</span>, <span class=hljs-comment>// 4 - D</span>
+    <span class=hljs-number>0</span>,<span class=hljs-number>1</span>, <span class=hljs-comment>// 5 - A</span>
+    ])
+boxBuffer.<span class="hljs-title hljs-function">setAttribute</span>( <span class=hljs-string>'position'</span>, <span class=hljs-keyword>new</span> T.<span class="hljs-title hljs-class">BufferAttribute</span>( vertices, <span class=hljs-number>3</span> ) );
+boxBuffer.<span class="hljs-title hljs-function">setAttribute</span>(<span class=hljs-string>'uv'</span>, <span class=hljs-keyword>new</span> T.<span class="hljs-title hljs-class">BufferAttribute</span>(uvs, <span class=hljs-number>2</span>))
+</code></pre><p>D-------C | | | | A-------B<p>constructor the mesh with the float array, each point contain 3 vertives, form a triangle face, with 2 triangle face form a quadrilateral.<p>uvs attributes for uv mapping, uv as 2d space using only x,y coordination. each 2 value corresponding the respect point in local space witch corresponding with shader mapping space.</div>
