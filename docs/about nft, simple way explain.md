@@ -1,4 +1,4 @@
-# about nft, simple way explanation
+# about nft, simple way explain
 
 ### how nft works
 > NFT - non fugible token  
