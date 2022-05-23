@@ -1,3 +1,7 @@
+---
+tags: [web3.0, nft, decentralized, ipfs]
+---
+
 # about nft & ipfs, simple way explain
 
 ### NFT
