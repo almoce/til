@@ -1,4 +1,4 @@
-# about nft & , simple way explain
+# about nft & ipfs, simple way explain
 
 ### NFT
 > NFT - non fugible token  
