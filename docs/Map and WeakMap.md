@@ -28,9 +28,10 @@ instnace methods
 
 ```javascript
 let a = new WeakMap()
-(() => {
+{
     let b = {b: 1}
-    a.set(b, 1)
-})()
-// a = WeakMap{}
+    b.set(b, 1)
+    console.log(a) // a = WeakMap({...} => 1)
+}
+console.log(a) // a = WeakMap{}
 ```
