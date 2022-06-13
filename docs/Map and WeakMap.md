@@ -17,9 +17,20 @@ map has iterability
 ### WeakMap
 collection of key/value pair, and the `keys` must be object(Symbol and primitive are not allowed), `values` can be any javascript type
 weakmap has no iterability 
+entrie are garbage collected dependented, which means if the object has been cleared by garbage collected, it would removed from weakmap automatically 
 
 instnace methods
 - delete(key)
 - get(key)
 - has(key)
 - set(key, value)
+
+
+```javascript
+let a = new WeakMap()
+(() => {
+    let b = {b: 1}
+    a.set(b, 1)
+})()
+// a = WeakMap{}
+```
