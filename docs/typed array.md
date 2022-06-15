@@ -18,10 +18,10 @@ javascript standard array is a general-purpose data structure, that means that i
 | Float64Array  | 8 | 64-bit floating point number (double) |
 
 ### signed vs unsigned (+, -)
-signed char ： `[-2^7, 2^7) = [-128, 128]`
-unsigned char：`[0, 2^8] = [0, 256]`
-signed n int：`[-2^(n-1, 2^(n-1]`
-unsigned n int：`[0, 2^n]`
+signed char ： `[-2^7, 2^7) = [-128, 128]`  
+unsigned char：`[0, 2^8] = [0, 256]`  
+signed n int：`[-2^(n-1, 2^(n-1]`  
+unsigned n int：`[0, 2^n]`  
 
 ### method
 - get(index)
