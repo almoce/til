@@ -6,14 +6,14 @@ tags: [webgl, JavaScript]
 # webgl2 intro hello world
 
 ### webgl2 process
-- create program
-- create shader
-	+ compile shader
-	+ set shader
-	+ attach shader
-- link program
-- use program
-- draw
+- create program `gl.createProgram()`
+- create shader `gl.createShader($shaderType)`
+	+ set shader `gl.shaderSource($shader, $shaderSource)`
+	+ compile shader `gl.compileShader($shader)`
+	+ attach shader `gl.attachShader($program, $shader)`
+- link program `gl.linkProgram(program)`
+- use program `gl.useProgram(program)`
+- draw `gl.drawArrays($drawType, offset, count)`
 
 
 ### webgl1 -> webgl2
@@ -21,7 +21,7 @@ tags: [webgl, JavaScript]
 - shader source need declara the version, and also need to be the first line,  `#version 300 es`
 - fragment shader must define the precison, ex: `precision mediump float;`, does not return `gl_FragColor`, can be defined with `out`, ex: `out vec4 fragColor;`
 
-
+  
 ```html
 <!DOCTYPE html>
 <html>
@@ -40,7 +40,7 @@ tags: [webgl, JavaScript]
 		const gl = canvas.getContext('webgl2')
 
 
-		const program = gl.createProgram();
+		const program = gl.createProgram()
 
 		{ 
 			const source = `#version 300 es
