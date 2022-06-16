@@ -1,0 +1,60 @@
+<!doctypehtml><meta charset=utf8><meta content="IE=edge"http-equiv=X-UA-Compatible><title>webgl2 intro hello world</title><link href=/css.css rel=stylesheet><link href=/highlight.css rel=stylesheet><div class=container><h1 id=webgl2-intro-hello-world>webgl2 intro hello world</h1><h3 id=webgl2-process>webgl2 process</h3><ul><li>create program<li>create shader<ul><li>compile shader<li>set shader<li>attach shader</ul><li>link program<li>use program<li>draw</ul><h3 id=webgl1---webgl2>webgl1 -> webgl2</h3><ul><li>shader source need declara the version, and also need to be the first line, <code>#version 300 es</code><li>fragment shader must define the precison, ex: <code>precision mediump float;</code>, does not return <code>gl_FragColor</code>, can be defined with <code>out</code>, ex: <code>out vec4 fragColor;</code></ul><pre><code class="hljs language-html"><span class=hljs-meta>&#60!DOCTYPE <span class=hljs-keyword>html</span>></span>
+<span class=hljs-tag>&lt;<span class=hljs-name>html</span>></span>
+<span class=hljs-tag>&lt;<span class=hljs-name>head</span>></span>
+	<span class=hljs-tag>&lt;<span class=hljs-name>meta</span> <span class=hljs-attr>charset</span>=<span class=hljs-string>"utf-8"</span>></span>
+	<span class=hljs-tag>&lt;<span class=hljs-name>meta</span> <span class=hljs-attr>http-equiv</span>=<span class=hljs-string>"X-UA-Compatible"</span> <span class=hljs-attr>content</span>=<span class=hljs-string>"IE=edge"</span>></span>
+	<span class=hljs-tag>&lt;<span class=hljs-name>title</span>></span><span class=hljs-tag>&#60/<span class=hljs-name>title</span>></span>
+	<span class=hljs-tag>&lt;<span class=hljs-name>link</span> <span class=hljs-attr>rel</span>=<span class=hljs-string>"stylesheet"</span> <span class=hljs-attr>href</span>=<span class=hljs-string>""</span>></span>
+<span class=hljs-tag>&#60/<span class=hljs-name>head</span>></span>
+<span class=hljs-tag>&lt;<span class=hljs-name>body</span>></span>
+	<span class=hljs-tag>&lt;<span class=hljs-name>canvas</span>></span><span class=hljs-tag>&#60/<span class=hljs-name>canvas</span>></span>
+	<span class=hljs-tag>&lt;<span class=hljs-name>script</span>></span><span class=javascript>
+		<span class=hljs-keyword>const</span> canvas = <span class="hljs-language hljs-variable">document</span>.<span class="hljs-function hljs-title">querySelector</span>(<span class=hljs-string>'canvas'</span>);
+		canvas.<span class=hljs-property>width</span> = <span class=hljs-number>500</span>
+		canvas.<span class=hljs-property>height</span> = <span class=hljs-number>500</span>
+		<span class=hljs-keyword>const</span> gl = canvas.<span class="hljs-function hljs-title">getContext</span>(<span class=hljs-string>'webgl2'</span>)
+
+
+		<span class=hljs-keyword>const</span> program = gl.<span class="hljs-function hljs-title">createProgram</span>();
+
+		{ 
+			<span class=hljs-keyword>const</span> source = <span class=hljs-string>`#version 300 es
+
+				void main() {
+					gl_Position = vec4(0.0, 0.0, 0.0, 0.0);
+					gl_PointSize = 100.0;
+				}
+			`</span>
+			<span class=hljs-comment>// create vertex shader</span>
+			<span class=hljs-keyword>const</span> shader = gl.<span class="hljs-function hljs-title">createShader</span>(gl.<span class=hljs-property>VERTEX_SHADER</span>)
+			gl.<span class="hljs-function hljs-title">shaderSource</span>(shader, source)
+			gl.<span class="hljs-function hljs-title">compileShader</span>(shader)
+			gl.<span class="hljs-function hljs-title">attachShader</span>(program, shader)
+		}
+
+		{ 
+			<span class=hljs-keyword>const</span> source = <span class=hljs-string>`#version 300 es
+			precision mediump float;
+			out vec4 fragColor;
+
+			void main() {
+				fragColor = vec4(1.0, 0.0, 0.0, 1.0);
+			}
+			`</span>
+			<span class=hljs-comment>// create fragment shader</span>
+			<span class=hljs-keyword>const</span> shader = gl.<span class="hljs-function hljs-title">createShader</span>(gl.<span class=hljs-property>FRAGMENT_SHADER</span>)
+			gl.<span class="hljs-function hljs-title">shaderSource</span>(shader, source)
+			gl.<span class="hljs-function hljs-title">compileShader</span>(shader)
+			gl.<span class="hljs-function hljs-title">attachShader</span>(program, shader)
+		}
+
+		gl.<span class="hljs-function hljs-title">linkProgram</span>(program)
+
+		gl.<span class="hljs-function hljs-title">useProgram</span>(program)
+
+		gl.<span class="hljs-function hljs-title">drawArrays</span>(gl.<span class=hljs-property>POINTS</span>, <span class=hljs-number>0</span>, <span class=hljs-number>1</span>)
+
+	</span><span class=hljs-tag>&#60/<span class=hljs-name>script</span>></span>
+<span class=hljs-tag>&#60/<span class=hljs-name>body</span>></span>
+<span class=hljs-tag>&#60/<span class=hljs-name>html</span>></span>
+</code></pre></div>
