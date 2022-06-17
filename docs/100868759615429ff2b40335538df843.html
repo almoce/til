@@ -1,0 +1,14 @@
+<!doctypehtml><meta charset=utf8><meta content="IE=edge"http-equiv=X-UA-Compatible><title>webgl2 precision define</title><link href=/css.css rel=stylesheet><link href=/highlight.css rel=stylesheet><div class=container><h1 id=webgl2-precision>webgl2 precision</h1><p>precission define can impact the performance and quality or accuracy<blockquote><p>low precision<ul><li>good performance, my cause bug rendering</ul></blockquote><blockquote><p>hight precision<ul><li>bad performance for rendering</ul></blockquote><p>pre defined precision can omit the precision define<h5 id=vertex-shaders>Vertex shaders</h5><ul><li>float<li>int<li>sampler2D<li>samplerCube</ul><h5 id=fragment-shaders>fragment shaders</h5><ul><li><del>float</del><li>int<li>sampler2D<li>samplerCube</ul><pre><code class="hljs language-csharp">`<span class=hljs-meta>#version 300 es</span>
+precision mediump <span class=hljs-built_in>float</span>;
+<span class=hljs-keyword>out</span> vec4 fragColor;
+
+<span class=hljs-function><span class=hljs-keyword>void</span> <span class=hljs-title>main</span>()</span> {
+	fragColor = vec4(<span class=hljs-number>1.0</span>, <span class=hljs-number>0.0</span>, <span class=hljs-number>0.0</span>, <span class=hljs-number>1.0</span>);
+	}
+</code></pre><pre><code class="hljs language-csharp">`<span class=hljs-meta>#version 300 es</span>
+<span class=hljs-keyword>out</span> mediump vec4 fragColor;
+
+<span class=hljs-function><span class=hljs-keyword>void</span> <span class=hljs-title>main</span>()</span> {
+	fragColor = vec4(<span class=hljs-number>1.0</span>, <span class=hljs-number>0.0</span>, <span class=hljs-number>0.0</span>, <span class=hljs-number>1.0</span>);
+	}
+</code></pre><p>can be defined for each variable or in global for all.</div>

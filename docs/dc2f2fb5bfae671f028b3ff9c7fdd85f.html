@@ -1,0 +1,137 @@
+<!doctypehtml><meta charset=utf8><meta content="IE=edge"http-equiv=X-UA-Compatible><title>webgl2 uniforms</title><link href=/css.css rel=stylesheet><link href=/highlight.css rel=stylesheet><div class=container><h1 id=webgl2-uniforms>webgl2 uniforms</h1><ul><li>global variables<li>defined in shaders<li>set with javascript<li>send to and shared to vertex and fragments shader<li>cant change during a draw call</ul><h5 id=webgl-vs-opengl-30-es>webgl vs opengl 3.0 es</h5><blockquote><p>webgl</blockquote><ul><li>getAttribLocation() returns a Nubmer<li>getUniformLocation() returns an Object</ul><blockquote><p>opengl</blockquote><ul><li>glGetAttribLocation() returns a GL_INT<li>glGetUniformLocation() returns a GL_INT</ul><p>uniform cant change during the draw, so we should only get the location once before set a uniform, and prevent try obtain the location during the draw or repeat call.<h3 id=tip-for-passing-attributes-and-uniform>tip for passing attributes and uniform</h3><ol><li><code>uniform float uSize;</code> - <code>gl.uniform1f(uSize, 1.0)</code><li><code>uniform float uSize;</code> - <code>gl.uniform1fv(uSize, [1.0])</code><li><code>uniform float uSize[3];</code> - <code>gl.uniform1fv(uSize, [1.0, 2.0, 3.0])</code></ol><p>the option 1 is equal as option 2. the last 3 option, which will result passing as array to the shader, defining the uniform as array with 3 item count.<pre><code class="hljs language-javascript"><span class=hljs-keyword>const</span> <span class="hljs-variable hljs-constant">FRAG_SOURCE</span> = <span class=hljs-string>`
+	#version 300 es
+	precision medium float;
+
+	uniform vec4 uColor;
+	out vec4 fragColor;
+	void main() {
+		fragColor = uColor;
+	}
+`</span>
+<span class=hljs-keyword>const</span> uColor = gl.<span class="hljs-title hljs-function">getUniformLocation</span>(program,  <span class=hljs-string>'uColor'</span>) <span class=hljs-comment>// get the location</span>
+gl.<span class="hljs-title hljs-function">uniform4f</span>(uColor, <span class=hljs-number>1</span>,<span class=hljs-number>0</span>,<span class=hljs-number>0</span>,<span class=hljs-number>1</span>) <span class=hljs-comment>// set the uniform</span>
+<span class=hljs-comment>// gl.uniform4fv(uColor, [1,0,0,1]) // set the uniform</span>
+</code></pre><pre><code class="hljs language-html"><span class=hljs-meta>&#60!DOCTYPE <span class=hljs-keyword>html</span>></span>
+<span class=hljs-tag>&lt;<span class=hljs-name>html</span>></span>
+<span class=hljs-tag>&lt;<span class=hljs-name>head</span>></span>
+	<span class=hljs-tag>&lt;<span class=hljs-name>meta</span> <span class=hljs-attr>charset</span>=<span class=hljs-string>"utf-8"</span>></span>
+	<span class=hljs-tag>&lt;<span class=hljs-name>meta</span> <span class=hljs-attr>http-equiv</span>=<span class=hljs-string>"X-UA-Compatible"</span> <span class=hljs-attr>content</span>=<span class=hljs-string>"IE=edge"</span>></span>
+	<span class=hljs-tag>&lt;<span class=hljs-name>title</span>></span><span class=hljs-tag>&#60/<span class=hljs-name>title</span>></span>
+	<span class=hljs-tag>&lt;<span class=hljs-name>link</span> <span class=hljs-attr>rel</span>=<span class=hljs-string>"stylesheet"</span> <span class=hljs-attr>href</span>=<span class=hljs-string>""</span>></span>
+<span class=hljs-tag>&#60/<span class=hljs-name>head</span>></span>
+<span class=hljs-tag>&lt;<span class=hljs-name>body</span>></span>
+	<span class=hljs-tag>&lt;<span class=hljs-name>canvas</span>></span><span class=hljs-tag>&#60/<span class=hljs-name>canvas</span>></span>
+	<span class=hljs-tag>&lt;<span class=hljs-name>script</span>></span><span class=javascript>
+		<span class=hljs-keyword>const</span> canvas = <span class="hljs-variable hljs-language">document</span>.<span class="hljs-title hljs-function">querySelector</span>(<span class=hljs-string>'canvas'</span>);
+		canvas.<span class=hljs-property>width</span> = <span class=hljs-number>500</span>
+		canvas.<span class=hljs-property>height</span> = <span class=hljs-number>500</span>
+		canvas.<span class=hljs-property>style</span>.<span class=hljs-property>border</span> = <span class=hljs-string>'1px solid #ccc'</span>
+		<span class=hljs-keyword>const</span> gl = canvas.<span class="hljs-title hljs-function">getContext</span>(<span class=hljs-string>'webgl2'</span>)
+
+
+		<span class=hljs-keyword>const</span> program = gl.<span class="hljs-title hljs-function">createProgram</span>();
+		<span class=hljs-keyword>const</span> shaders = {}
+		{ 
+			<span class=hljs-keyword>const</span> source = <span class=hljs-string>`#version 300 es
+			precision mediump float;
+			uniform float uPointSize;
+			uniform vec2 uPosition;
+
+			void main() {
+				gl_PointSize = uPointSize;
+				gl_Position = vec4(uPosition, 0.0, 1);
+			}
+			`</span>
+			<span class=hljs-comment>// create vertex shader</span>
+			<span class=hljs-keyword>const</span> shader = gl.<span class="hljs-title hljs-function">createShader</span>(gl.<span class=hljs-property>VERTEX_SHADER</span>)
+			gl.<span class="hljs-title hljs-function">shaderSource</span>(shader, source)
+			gl.<span class="hljs-title hljs-function">compileShader</span>(shader)
+			gl.<span class="hljs-title hljs-function">attachShader</span>(program, shader)
+			shaders[<span class=hljs-string>'vertex'</span>] = shader
+		}
+
+		{ 
+			<span class=hljs-keyword>const</span> source = <span class=hljs-string>`#version 300 es
+			precision mediump float;
+			out vec4 fragColor;
+
+			uniform int uIndex;
+			uniform vec4 uColor[3];
+
+			void main() {
+				fragColor = uColor[uIndex];
+			}
+			`</span>
+			<span class=hljs-comment>// create fragment shader</span>
+			<span class=hljs-keyword>const</span> shader = gl.<span class="hljs-title hljs-function">createShader</span>(gl.<span class=hljs-property>FRAGMENT_SHADER</span>)
+			gl.<span class="hljs-title hljs-function">shaderSource</span>(shader, source)
+			gl.<span class="hljs-title hljs-function">compileShader</span>(shader)
+			gl.<span class="hljs-title hljs-function">attachShader</span>(program, shader)
+			shaders[<span class=hljs-string>'fragment'</span>] = shader
+
+		}
+
+		gl.<span class="hljs-title hljs-function">linkProgram</span>(program)
+
+		<span class=hljs-keyword>if</span> (!gl.<span class="hljs-title hljs-function">getProgramParameter</span>(program, gl.<span class=hljs-property>LINK_STATUS</span>)) {
+			<span class="hljs-variable hljs-language">console</span>.<span class="hljs-title hljs-function">log</span>(gl.<span class="hljs-title hljs-function">getShaderInfoLog</span>(shaders[<span class=hljs-string>'vertex'</span>]));
+			<span class="hljs-variable hljs-language">console</span>.<span class="hljs-title hljs-function">log</span>(gl.<span class="hljs-title hljs-function">getShaderInfoLog</span>(shaders[<span class=hljs-string>'fragment'</span>]));
+		}
+
+
+		gl.<span class="hljs-title hljs-function">useProgram</span>(program)
+
+
+
+
+		<span class=hljs-keyword>const</span> uPointSize = gl.<span class="hljs-title hljs-function">getUniformLocation</span>(program, <span class=hljs-string>"uPointSize"</span>)
+		<span class=hljs-keyword>const</span> uPosition = gl.<span class="hljs-title hljs-function">getUniformLocation</span>(program, <span class=hljs-string>"uPosition"</span>)
+		<span class=hljs-keyword>const</span> uIndex = gl.<span class="hljs-title hljs-function">getUniformLocation</span>(program, <span class=hljs-string>'uIndex'</span>)
+		<span class=hljs-keyword>const</span> uColor = gl.<span class="hljs-title hljs-function">getUniformLocation</span>(program, <span class=hljs-string>'uColor'</span>)
+
+<span class=hljs-comment>/**
+ 		// setting the color list, and code manually for each point
+ 		const colorList = [
+			1,0,0,1, // red
+			0,1,0,1, // Green
+			0,0,1,1, // blue
+		]
+		gl.uniform4fv(uColor, colorList)
+
+		gl.uniform1f(uPointSize, 100)
+		gl.uniform2f(uPosition, 0, 0)
+		gl.uniform1i(uIndex, 0)
+		gl.drawArrays(gl.POINTS, 0, 1)
+
+		gl.uniform1f(uPointSize, 50)
+		gl.uniform2f(uPosition, 0.5, 0.5)
+		gl.uniform1i(uIndex, 1)
+		gl.drawArrays(gl.POINTS, 0, 1)
+
+		gl.uniform1f(uPointSize, 50)
+		gl.uniform2f(uPosition, -0.5, 0.5)
+		gl.uniform1i(uIndex, 2)
+		gl.drawArrays(gl.POINTS, 0, 1)
+
+ */</span>
+
+		<span class=hljs-keyword>const</span> colorList = [
+			[<span class=hljs-number>1</span>,<span class=hljs-number>0</span>,<span class=hljs-number>0</span>,<span class=hljs-number>1</span>], <span class=hljs-comment>// red</span>
+			[<span class=hljs-number>0</span>,<span class=hljs-number>1</span>,<span class=hljs-number>0</span>,<span class=hljs-number>1</span>], <span class=hljs-comment>// Green</span>
+			[<span class=hljs-number>0</span>,<span class=hljs-number>0</span>,<span class=hljs-number>1</span>,<span class=hljs-number>1</span>], <span class=hljs-comment>// blue</span>
+		]
+
+		gl.<span class="hljs-title hljs-function">uniform4fv</span>(uColor, colorList.<span class="hljs-title hljs-function">flat</span>())
+
+		<span class=hljs-keyword>const</span> <span class="hljs-title hljs-function">v</span> = (<span class=hljs-params></span>) => <span class="hljs-title hljs-class">Math</span>.<span class="hljs-title hljs-function">random</span>() * (<span class="hljs-title hljs-class">Math</span>.<span class="hljs-title hljs-function">random</span>() > <span class=hljs-number>0.5</span> ? -<span class=hljs-number>1</span> : <span class=hljs-number>1</span>)
+		colorList.<span class="hljs-title hljs-function">forEach</span>(<span class=hljs-function>(<span class=hljs-params>i, idx</span>) =></span> {
+			gl.<span class="hljs-title hljs-function">uniform1f</span>(uPointSize, (idx+<span class=hljs-number>1</span>)* <span class=hljs-number>20</span>)
+			gl.<span class="hljs-title hljs-function">uniform2f</span>(uPosition, <span class="hljs-title hljs-function">v</span>(), <span class="hljs-title hljs-function">v</span>())
+			gl.<span class="hljs-title hljs-function">uniform1i</span>(uIndex, idx)
+			gl.<span class="hljs-title hljs-function">drawArrays</span>(gl.<span class=hljs-property>POINTS</span>, <span class=hljs-number>0</span>, <span class=hljs-number>1</span>)
+		})
+
+	</span><span class=hljs-tag>&#60/<span class=hljs-name>script</span>></span>
+<span class=hljs-tag>&#60/<span class=hljs-name>body</span>></span>
+<span class=hljs-tag>&#60/<span class=hljs-name>html</span>></span>
+</code></pre></div>
