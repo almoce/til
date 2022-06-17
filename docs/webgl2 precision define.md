@@ -26,7 +26,7 @@ pre defined precision can omit the precision define
   
 
 
-```glsl
+```
 `#version 300 es
 precision mediump float;
 out vec4 fragColor;
@@ -36,7 +36,7 @@ void main() {
 	}
 ```
 
-```glsl
+```
 `#version 300 es
 out mediump vec4 fragColor;
 
