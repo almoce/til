@@ -1,28 +1,38 @@
-<!doctypehtml><meta charset=utf8><meta content="IE=edge"http-equiv=X-UA-Compatible><title>first person view moving control in 3d</title><link href=/css.css rel=stylesheet><link href=/highlight.css rel=stylesheet><div class=container><h1 id=first-person-view-moving-control-in-3d>first person view moving control in 3d</h1><p>when a object moving in 2d we will have 2 direction, <code>x</code> and <code>y</code>, in 3d we will have 3 direction, <code>x</code>, <code>y</code> and <code>z</code><p>what are the properties we need to define the person moving<ul><li>position<li>speed<li>direction<li>camera view</ul><p>the object's position is defined by the objects moving direction and moving speed <code>position = direction + speed</code><p>if we do not care about the object view/camera view, we can simply modify the object position like in 2d, if the object have the speed 1, we may have <code>x+1</code>, <code>x-1</code>, or <code>z+1</code>, <code>z-1</code><p>in the first person view, this object may change the view direction, so the forward and backward would defined by the direction<p>the direction would be simple detect as the same as the camera view direction<code>camera.getWorldDirection()</code>, and the horizontal direction would be detect the the cross product, <code>direction.cross(camera.up)</code> witch is the vector perpendicular to the direction vector and the up direction.<p>now we have the object view direction, then would simple by adding the speed the to direction, but the speed should be manipulated by the moving direction in interaction, for example, if we press up, it would move to forward and left move to left, so there is a multi direction if we press up and left in the simultaneously, 45deg direction.<br>for example, if we have forward direction (0,0,1), and left direction (1,0,0), then the final direction would be (1,0,1).<p>so for moving speed of 2 direction, simple add up from to direction, if we move forward and left simultaneously, <code>direction=forward+left</code>, and back to right <code>direction = backward + right</code> and so on. and the inverse direction, <code>backward = -forward</code>, <code>right = - left</code>.<p>to sum up, we would need a moving speed direction vector, <code>(0,0,0)</code>, then get the object view direction to detect the moving direction, moving direction may be forward/backward,or left/right. <code>final moving direction = sum of multi direction controlled by interaction</code>, each direction can be defined by the single direction vector.<pre><code class="hljs language-javascript"><span class=hljs-keyword>let</span> position = <span class="hljs-title hljs-class">Vector3</span>(<span class=hljs-number>0</span>,<span class=hljs-number>0</span>,<span class=hljs-number>0</span>)
+<!doctypehtml><meta charset=utf8><meta content="IE=edge"http-equiv=X-UA-Compatible><title>first person view moving control in 3d</title><link href=/css.css rel=stylesheet><link href=/highlight.css rel=stylesheet><div class=container><h1 id=first-person-view-moving-control-in-3d>first person view moving control in 3d</h1><p>when a object moving in 2d we will have 2 direction, <code>x</code> and <code>y</code>, in 3d we will have 3 direction, <code>x</code>, <code>y</code> and <code>z</code><p>what are the properties we need to defined the person/object moving action<ul><li>position<li>speed<li>direction<li>camera view</ul><p>the object's position is defined by the objects moving direction and moving speed <code>position = direction + speed</code><p>if we do not care about the object view/camera view, we can simply modify the object position like in 2d, if the object have the speed 1, we may have <code>x+1</code>, <code>x-1</code>, or <code>z+1</code>, <code>z-1</code><p>in the first person view, this object may change the view direction, so the forward and backward would defined by the direction<p>the direction would be simple detect as the same as the camera view direction<code>camera.getWorldDirection()</code>, and the horizontal direction would be detect the the cross product, <code>direction.cross(camera.up)</code> witch is the vector perpendicular to the direction vector and the up direction.<p>now we have the object view direction, then would simple by adding the speed the to direction, but the speed should be manipulated by the moving direction in interaction, for example, if we press up, it would move to forward and left move to left, so there is a multi direction if we press up and left in the simultaneously, 45deg direction.<br>for example, if we have forward direction (0,0,1), and left direction (1,0,0), then the final direction would be (1,0,1).<p>so for moving speed of 2 direction, simple add up from to direction, if we move forward and left simultaneously, <code>direction=forward+left</code>, and back to right <code>direction = backward + right</code> and so on. and the inverse direction, <code>backward = -forward</code>, <code>right = - left</code>.<p>to sum up, we would need a moving speed direction vector, <code>(0,0,0)</code>, then get the object view direction to detect the moving direction, moving direction may be forward/backward,or left/right. <code>final moving direction = sum of multi direction controlled by interaction</code>, each direction can be defined by the single direction vector.<pre><code class="hljs language-javascript"><span class=hljs-keyword>let</span> position = <span class="hljs-title hljs-class">Vector3</span>(<span class=hljs-number>0</span>,<span class=hljs-number>0</span>,<span class=hljs-number>0</span>)
 <span class=hljs-keyword>let</span> direction = <span class="hljs-title hljs-class">Vector3</span>(<span class=hljs-number>0</span>,<span class=hljs-number>0</span>,<span class=hljs-number>0</span>)
 <span class=hljs-keyword>let</span> camera = <span class="hljs-title hljs-class">Vector3</span>(<span class=hljs-number>1</span>,<span class=hljs-number>2</span>,<span class=hljs-number>3</span>)
 <span class=hljs-keyword>let</span> cameraUp = <span class="hljs-title hljs-class">Vector</span>(<span class=hljs-number>0</span>,<span class=hljs-number>1</span>,<span class=hljs-number>0</span>)
 
-direction = camera.<span class="hljs-title hljs-function">getWorldDirection</span>() <span class=hljs-comment>// the view's direction</span>
-direction.<span class=hljs-property>y</span> = <span class=hljs-number>0</span> <span class=hljs-comment>// normalize the y axis to 0, prevent the object moving up</span>
-direction.<span class="hljs-title hljs-function">normalize</span>() <span class=hljs-comment>// normalize the scale to 1 of the direction</span>
-<span class=hljs-keyword>if</span> (movingLeft || movingRight) {
-    direction = viewDirection.<span class="hljs-title hljs-function">cross</span>(camera.<span class=hljs-property>up</span>) <span class=hljs-comment>// get the cross product with up direction</span>
+<span class=hljs-keyword>function</span> <span class="hljs-title hljs-function">getDirection</span>(<span class=hljs-params></span>) {
+    direction = camera.<span class="hljs-title hljs-function">getWorldDirection</span>() <span class=hljs-comment>// the view's direction</span>
+    direction.<span class=hljs-property>y</span> = <span class=hljs-number>0</span> <span class=hljs-comment>// normalize the y axis to 0, prevent the object moving up</span>
+    direction.<span class="hljs-title hljs-function">normalize</span>() <span class=hljs-comment>// normalize the scale to 1 of the direction</span>
+    <span class=hljs-keyword>if</span> (movingLeft || movingRight) {
+        direction = viewDirection.<span class="hljs-title hljs-function">cross</span>(camera.<span class=hljs-property>up</span>) <span class=hljs-comment>// get the cross product with up direction</span>
+    }
+    <span class=hljs-keyword>return</span> direction
 }
 
-<span class=hljs-keyword>let</span> speed = <span class="hljs-title hljs-class">Vector3</span>(<span class=hljs-number>0</span>,<span class=hljs-number>0</span>,<span class=hljs-number>0</span>)
-<span class=hljs-keyword>if</span> (forward) {
-    direction = direction * <span class=hljs-number>1</span>
+<span class=hljs-keyword>function</span> <span class="hljs-title hljs-function">getFinalDirection</span>(<span class=hljs-params></span>) {
+    <span class=hljs-keyword>let</span> speed = <span class="hljs-title hljs-class">Vector3</span>(<span class=hljs-number>0</span>,<span class=hljs-number>0</span>,<span class=hljs-number>0</span>)
+    <span class=hljs-keyword>let</span> direction = <span class="hljs-title hljs-function">getDirection</span>()
+    <span class=hljs-keyword>if</span> (forward) {
+        direction = direction * <span class=hljs-number>1</span>
+    }
+    <span class=hljs-keyword>if</span> (backward) {
+        direction = direction * -<span class=hljs-number>1</span>
+    }
+    <span class=hljs-keyword>if</span> (movingLeft) {
+        direction = direction * <span class=hljs-number>1</span>
+    }
+    <span class=hljs-keyword>if</span> (movingRight) {
+        direction = direction * -<span class=hljs-number>1</span>
+    }
+    <span class=hljs-keyword>return</span> direction + speed
 }
-<span class=hljs-keyword>if</span> (backward) {
-    direction = direction * -<span class=hljs-number>1</span>
-}
-<span class=hljs-keyword>if</span> (movingLeft) {
-    direction = direction * <span class=hljs-number>1</span>
-}
-<span class=hljs-keyword>if</span> (movingRight) {
-    direction = direction * -<span class=hljs-number>1</span>
-}
-<span class=hljs-keyword>const</span> finalDirection = direction + speed
+
+
+<span class=hljs-keyword>const</span> finalDirection = <span class="hljs-title hljs-function">getFinalDirection</span>()
 position = position + finalDirection
+
 </code></pre></div>
