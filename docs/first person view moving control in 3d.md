@@ -6,7 +6,7 @@ tags: [math, javascript, vector, 3d, game]
 
 when a object moving in 2d we will have 2 direction, `x` and `y`, in 3d we will have 3 direction, `x`, `y` and `z`  
   
-what are the properties we need to define the person moving
+what are the properties we need to defined the person/object moving action
 - position 
 - speed
 - direction
@@ -35,26 +35,36 @@ let direction = Vector3(0,0,0)
 let camera = Vector3(1,2,3)
 let cameraUp = Vector(0,1,0)
 
-direction = camera.getWorldDirection() // the view's direction
-direction.y = 0 // normalize the y axis to 0, prevent the object moving up
-direction.normalize() // normalize the scale to 1 of the direction
-if (movingLeft || movingRight) {
-    direction = viewDirection.cross(camera.up) // get the cross product with up direction
+function getDirection() {
+    direction = camera.getWorldDirection() // the view's direction
+    direction.y = 0 // normalize the y axis to 0, prevent the object moving up
+    direction.normalize() // normalize the scale to 1 of the direction
+    if (movingLeft || movingRight) {
+        direction = viewDirection.cross(camera.up) // get the cross product with up direction
+    }
+    return direction
 }
 
-let speed = Vector3(0,0,0)
-if (forward) {
-    direction = direction * 1
+function getFinalDirection() {
+    let speed = Vector3(0,0,0)
+    let direction = getDirection()
+    if (forward) {
+        direction = direction * 1
+    }
+    if (backward) {
+        direction = direction * -1
+    }
+    if (movingLeft) {
+        direction = direction * 1
+    }
+    if (movingRight) {
+        direction = direction * -1
+    }
+    return direction + speed
 }
-if (backward) {
-    direction = direction * -1
-}
-if (movingLeft) {
-    direction = direction * 1
-}
-if (movingRight) {
-    direction = direction * -1
-}
-const finalDirection = direction + speed
+
+
+const finalDirection = getFinalDirection()
 position = position + finalDirection
+
 ```
