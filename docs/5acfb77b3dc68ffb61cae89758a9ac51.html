@@ -1,0 +1,29 @@
+<!doctypehtml><meta charset=utf8><meta content="IE=edge"http-equiv=X-UA-Compatible><title>threejs animation cross transition</title><link href=/css.css rel=stylesheet><link href=/highlight.css rel=stylesheet><div class=container><h1 id=threejs-animation-cross-transition>threejs animation cross transition</h1><p>create 2 or multiplier animation actions, and set the action status to play, adjust the weight of the inactive action. by manipulate the weight value can make the cross fade transition between animations.<pre><code class="hljs language-javascript"><span class=hljs-keyword>const</span> animationsObject = <span class=hljs-keyword>new</span> <span class="hljs-constant hljs-variable">THREE</span>.<span class="hljs-title hljs-function">animationObjectGroup</span>($OBJECTS/$SCENE)
+<span class=hljs-keyword>const</span> mixer = <span class=hljs-keyword>new</span> <span class="hljs-constant hljs-variable">THREE</span>.<span class="hljs-title hljs-class">AnimationMixer</span>(animationsObject)
+<span class=hljs-keyword>const</span> actionA = <span class=hljs-keyword>new</span> <span class="hljs-constant hljs-variable">THREE</span>.<span class="hljs-title hljs-class">AnimationAction</span>()
+actionA.<span class="hljs-title hljs-function">play</span>()
+actionA.<span class="hljs-title hljs-function">setEffectiveWeight</span>(<span class=hljs-number>1</span>)
+mixer.<span class="hljs-title hljs-function">clipAction</span>(actionA)
+
+<span class=hljs-keyword>const</span> actionB = <span class=hljs-keyword>new</span> <span class="hljs-constant hljs-variable">THREE</span>.<span class="hljs-title hljs-class">AnimationAction</span>()
+actionB.<span class="hljs-title hljs-function">play</span>()
+actionB.<span class="hljs-title hljs-function">setEffectiveWeight</span>(<span class=hljs-number>0</span>)
+mixer.<span class="hljs-title hljs-function">clipAction</span>(<span class=hljs-params>actionB</span>)
+
+
+{ <span class=hljs-comment>// corss fade transition</span>
+    actionB.<span class=hljs-property>enabled</span> = <span class=hljs-literal>true</span>
+    actionB.<span class="hljs-title hljs-function">setEffectiveWeight</span>(<span class=hljs-number>1</span>)
+    <span class=hljs-comment>// (method) AnimationAction.crossFadeTo(fadeInAction: THREE.AnimationAction, duration: number, warp: boolean): THREE.AnimationAction</span>
+    actionA.<span class="hljs-title hljs-function">crossFadeTo</span>(actionB, <span class=hljs-number>1</span>, <span class=hljs-literal>true</span>) 
+}
+
+<span class=hljs-keyword>function</span> <span class="hljs-title hljs-function">update</span>(<span class=hljs-params>delta</span>) {
+    render.<span class="hljs-title hljs-function">render</span>(camera, scene) <span class=hljs-comment>// render</span>
+    mixer.<span class="hljs-title hljs-function">update</span>(delta)
+    <span class="hljs-title hljs-function">requestAnimationFrame</span>(update)
+}
+
+<span class="hljs-title hljs-function">update</span>()
+
+</code></pre></div>
